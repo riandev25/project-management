@@ -13,7 +13,7 @@ export const NoIconBtn = ({ id, name, onClick }: NoIconBtnProp) => {
     <button
       data-id={id}
       type='button'
-      className='hover:bg-gray-500 bg-gray-200 flex flex-row justify-start items-center rounded-sm py-1 px-3 gap-2'
+      className='bg-gray-200 flex flex-row justify-start items-center rounded-sm py-1 px-3 gap-2 hover:bg-gray-400'
       onClick={onClick}
     >
       <span className='text-sm text-gray-700'>{name}</span>
