@@ -14,13 +14,13 @@ import {
   faArrowRight,
   faShare,
 } from '@fortawesome/free-solid-svg-icons';
-import DefaultBtn from '../../UI/Buttons/DefaultBtn';
-import LabelsModal from './Labels/LabelsModal';
+import DefaultBtn from '../../../UI/Buttons/DefaultBtn';
+import LabelsModal from '../Labels/LabelsModal';
 // import { FeatureContext } from '../../lib/context/FeatureContext/FeatureContext';
-import isOpen from '../../lib/helper/features/isOpen';
-import { FeatureContext } from '../../lib/context/FeatureContext/featureProvider';
-import ChecklistModal from './Checklist/ChecklistModal';
-import useFeatureState from '../../lib/hooks/features/useFeatureState';
+import isOpen from '../../../lib/helper/features/isOpen';
+import { FeatureContext } from '../../../lib/context/FeatureContext/featureProvider';
+import ChecklistModal from '../Checklist/ChecklistModal';
+import useFeatureState from '../../../lib/hooks/features/useFeatureState';
 
 const Features = () => {
   // const { FeatureState, openFeatureModal } = useContext(FeatureContext);
