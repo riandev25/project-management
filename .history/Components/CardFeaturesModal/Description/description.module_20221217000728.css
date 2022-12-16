@@ -1,0 +1,20 @@
+.ProseMirror pre {
+  background-color: rgb(31, 41, 55);
+  color: white;
+}
+
+.ProseMirror blockquote {
+  border-left: 1px solid rgb(156 163 175);
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ol {
+  list-style: lower-alpha;
+}
+
+.ProseMirror code {
+  background-color: rgb(156 163 175);
+}
