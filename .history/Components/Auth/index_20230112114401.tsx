@@ -62,7 +62,10 @@ const AuthMainComponent = () => {
   //   setShowPassword(!showPassword);
   // };
 
-  const onSubmitHandler = (data: FieldValues, e: any) => {
+  const onSubmitHandler = (
+    data: FieldValues,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     setPostEmail(data.email);
     setPostPassword(data.password);

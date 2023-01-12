@@ -5,7 +5,7 @@ import { authSchema } from '../../lib/utils/authSchema';
 import { IAuth } from '../../interfaces/auth.interface';
 import { capitalizeFirstLetter } from '../../lib/utils/captitalizeString';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../../services/UserService';
 import { IUser } from '../../interfaces/user.interface';
@@ -62,9 +62,9 @@ const AuthMainComponent = () => {
   //   setShowPassword(!showPassword);
   // };
 
-  const onSubmitHandler = (data: FieldValues, e: any) => {
-    e.preventDefault();
+  const onSubmitHandler = (data: FieldValues) => {
     setPostEmail(data.email);
+    console.log(postEmail);
     setPostPassword(data.password);
     postData();
     reset();

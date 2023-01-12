@@ -5,11 +5,11 @@ import { authSchema } from '../../lib/utils/authSchema';
 import { IAuth } from '../../interfaces/auth.interface';
 import { capitalizeFirstLetter } from '../../lib/utils/captitalizeString';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../../services/UserService';
 import { IUser } from '../../interfaces/user.interface';
-import { formatResponse } from '../../lib/utils/formatResponse';
+import { fortmatResponse } from '../../lib/utils/formatResponse';
 
 const AuthMainComponent = () => {
   const {
@@ -38,10 +38,10 @@ const AuthMainComponent = () => {
     },
     {
       onSuccess: (res) => {
-        setPostResult(formatResponse(res));
+        setPostResult(fortmatResponse(res));
       },
       onError: (err: any) => {
-        setPostResult(formatResponse(err.response?.data || err));
+        setPostResult(fortmatResponse(err.response?.data || err));
       },
     }
   );
@@ -54,7 +54,7 @@ const AuthMainComponent = () => {
     try {
       mutate();
     } catch (err) {
-      setPostResult(formatResponse(err));
+      setPostResult(fortmatResponse(err));
     }
   };
 
@@ -62,8 +62,8 @@ const AuthMainComponent = () => {
   //   setShowPassword(!showPassword);
   // };
 
-  const onSubmitHandler = (data: FieldValues, e: any) => {
-    e.preventDefault();
+  const onSubmitHandler = async (data: FieldValues) => {
+    console.log({ data });
     setPostEmail(data.email);
     setPostPassword(data.password);
     postData();
