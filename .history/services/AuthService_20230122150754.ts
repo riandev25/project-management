@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IUser } from '../interfaces/auth.interface';
+import { IUser } from '../interfaces/user.interface';
 
 const { NODE_ENV } = process.env;
 

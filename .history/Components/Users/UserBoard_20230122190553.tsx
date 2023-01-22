@@ -11,17 +11,17 @@ const UserBoard = ({ user }: any) => {
   const { logoutSubmitHandler, isLogoutLoading } = useAuthLogout();
   console.log(user);
 
-  // const { apiKey } = useAuthLoginStore(
-  //   (state) => ({
-  //     apiKey: state.apiKey,
-  //   }),
-  //   shallow
-  // );
+  const { apiKey } = useAuthLoginStore(
+    (state) => ({
+      apiKey: state.apiKey,
+    }),
+    shallow
+  );
 
-  const userService = UserService();
+  const userService = UserService(apiKey);
 
   const { data } = useQuery({
-    queryKey: ['boards-list'],
+    queryKey: ['boards-list', apiKey],
     queryFn: userService.getBoard,
   });
 

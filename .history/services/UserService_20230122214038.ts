@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { shallow } from 'zustand/shallow';
 import { IBoard } from '../interfaces/board.interface';
-import { ICreateBoard } from '../interfaces/user.interface';
 import { useAuthStore } from '../store/authStore';
 import { useAuthLoginStore } from '../store/authStore';
 
@@ -36,9 +35,9 @@ const UserService = () => {
     }
   };
 
-  const createBoard = async ({ boardName }: ICreateBoard) => {
+  const createBoard = async () => {
     try {
-      const response = await apiClient.post('', { boardName });
+      const response = await apiClient.get('');
       return response.data;
     } catch (err) {
       return err;

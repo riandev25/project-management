@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 interface IAuthStore {
-  // email: string;
-  // apiKey: string;
+  email: string;
+  apiKey: string;
   registerErr: string;
   registerErrStatus: boolean;
-  // updateEmail: (val: string) => void;
+  updateEmail: (val: string) => void;
   updateRegisterErr: (val: string) => void;
   updateRegisterErrStatus: () => void;
 }
@@ -16,19 +16,17 @@ interface IAuthLoginStore {
   loginErr: string;
   loginErrStatus: boolean;
   updateEmail: (val: string) => void;
-  updateApiKey: (val:string) => void
+  updateApiKey: (val: string) => void;
   updateLoginErr: (val: string) => void;
   updateLoginErrStatus: () => void;
 }
 
 export const useAuthStore = create<IAuthStore>()((set) => ({
-  // email: '',
-  // apiKey: '',
   registerErr: 'A',
   registerErrStatus: false,
-  // updateEmail: (val: string) => {
-  //   set(() => ({ email: val }));
-  // },
+  updateEmail: (val: string) => {
+    set(() => ({ email: val }));
+  },
   updateRegisterErr: (val: string) => {
     set(() => ({ registerErr: val }));
   },

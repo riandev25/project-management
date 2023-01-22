@@ -17,6 +17,7 @@ type AppPropsWithLayout = AppProps & {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  console.log(`Running on ${process.env.NODE_ENV} mode`);
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 

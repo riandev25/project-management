@@ -6,7 +6,7 @@ const BOARD_LIST = ['PM', 'NEW PM'];
 
 const BoardList = () => {
   return (
-    <div className='relative flex flex-col w-[50rem] pl-3 pr-6 text-gray-700 font-bold'>
+    <div className='flex flex-col w-[50rem] pl-3 pr-6 text-gray-700 font-bold'>
       <h1 className='px-2 py-3'>Your workspaces</h1>
       <ul className='grid grid-cols-3 md:grid-cols-4 gap-4'>
         {BOARD_LIST.map((item) => {

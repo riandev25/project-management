@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { shallow } from 'zustand/shallow';
-import { ILoginResult } from '../../../interfaces/auth.interface';
+import { ILoginResult } from '../../../interfaces/user.interface';
 import {
   loginUser,
   registerUser,
@@ -79,15 +79,15 @@ export const useAuthLogin = () => {
           password: data.password,
         });
         console.log(responseData);
-        if (responseData.response) {
-          updateLoginErr(responseData.response.data);
-          updateLoginErrStatus();
-        } else {
-          updateEmail(responseData.user.email);
-          updateApiKey(responseData.user.apiKey);
-          resetLogin();
-          setRedirect(true);
-        }
+        // if (responseData.response) {
+        //   updateLoginErr(responseData.response.data);
+        //   updateLoginErrStatus();
+        // } else {
+        //   updateEmail(responseData.user.email);
+        //   updateApiKey(responseData.user.email);
+        //   resetLogin();
+        //   setRedirect(true);
+        // }
       }
     } catch (err) {
       console.error(err);

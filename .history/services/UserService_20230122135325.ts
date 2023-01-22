@@ -1,20 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import { shallow } from 'zustand/shallow';
 import { IBoard } from '../interfaces/board.interface';
-import { ICreateBoard } from '../interfaces/user.interface';
 import { useAuthStore } from '../store/authStore';
-import { useAuthLoginStore } from '../store/authStore';
 
 const { NODE_ENV } = process.env;
 
-const UserService = () => {
-  const { apiKey } = useAuthLoginStore(
-    (state) => ({
-      apiKey: state.apiKey,
-    }),
-    shallow
-  );
-
+const UserService = (apiKey: string) => {
   const apiClient = axios.create({
     baseURL:
       NODE_ENV === 'production'
@@ -36,16 +26,7 @@ const UserService = () => {
     }
   };
 
-  const createBoard = async ({ boardName }: ICreateBoard) => {
-    try {
-      const response = await apiClient.post('', { boardName });
-      return response.data;
-    } catch (err) {
-      return err;
-    }
-  };
-
-  return { getBoard, createBoard };
+  return { getBoard };
 };
 
 export default UserService;

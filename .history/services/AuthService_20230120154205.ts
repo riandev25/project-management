@@ -1,18 +1,16 @@
 import axios from 'axios';
-import { IUser } from '../interfaces/auth.interface';
-
-const { NODE_ENV } = process.env;
+import { IUser } from '../interfaces/user.interface';
 
 const apiClient = axios.create({
-  baseURL:
-    NODE_ENV === 'production'
-      ? 'https://taskaccio.onrender.com/api/auth'
-      : 'http://localhost:3001/api/auth',
-  // baseURL: 'https://taskaccio.onrender.com/api/auth',
+  baseURL: 'https://taskaccio.onrender.com/api/auth',
   headers: {
     'Content-type': 'application/json',
   },
   withCredentials: true,
+  proxy: {
+    host: '127.0.0.1',
+    port: '3000',
+  },
 });
 
 export const registerUser = async ({ email, password }: IUser) => {

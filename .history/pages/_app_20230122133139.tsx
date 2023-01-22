@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { Fragment, ReactElement, ReactNode, useReducer } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DataContext } from '../lib/context/DataContext/DataContext';
 import { FeatureContext } from '../lib/context/FeatureContext/featureProvider';
 import featureReducer from '../lib/context/FeatureContext/featureReducer';
@@ -18,6 +19,8 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  const queryClient = new QueryClient();
 
   let data = [
     {
@@ -119,30 +122,31 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <Fragment>
-      <DataContext.Provider value={data}>
+      {/* <DataContext.Provider value={data}>
         <FeatureContext.Provider value={{ featureState, dispatchFeature }}>
-          <CardProvider>
-            <Component {...pageProps} />
-          </CardProvider>
+          <CardProvider> */}
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
+      {/* </CardProvider>
         </FeatureContext.Provider>
-      </DataContext.Provider>
+      </DataContext.Provider> */}
     </Fragment>
   );
 }
 
-// export async function getStaticProps() {
-//   // Call an external API endpoint to get posts.
-//   // You can use any data fetching library
-//   const res = await fetch('https://.../posts')
-//   const posts = await res.json()
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: false, // can also be true or 'blocking'
+  };
+}
 
-//   // By returning { props: { posts } }, the Blog component
-//   // will receive `posts` as a prop at build time
-//   return {
-//     props: {
-//       posts,
-//     },
-//   }
-// }
+export async function getStaticProps() {
+  return {
+    // Passed to the page component as props
+    props: { post: {} },
+  };
+}
 
 export default MyApp;
