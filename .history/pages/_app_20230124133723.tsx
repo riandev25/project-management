@@ -1,13 +1,32 @@
-import { ReactElement, useEffect, useReducer } from 'react';
-import Layout from '../../components/Layout';
-import type { NextPageWithLayout } from '../_app';
-import BoardComponent from '../../components/BoardComponent/Board';
-import CardProvider from '../../lib/context/CardContext/cardProvider';
-import { FeatureContext } from '../../lib/context/FeatureContext/featureProvider';
-import { DataContext } from '../../lib/context/DataContext/DataContext';
-import featureReducer from '../../lib/context/FeatureContext/featureReducer';
-import { useRouter } from 'next/router';
-const Board: NextPageWithLayout = () => {
+import '../styles/globals.css';
+import type { NextPage } from 'next';
+import type { AppContext, AppProps } from 'next/app';
+import { Fragment, ReactElement, ReactNode, useReducer } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { DataContext } from '../lib/context/DataContext/DataContext';
+import { FeatureContext } from '../lib/context/FeatureContext/featureProvider';
+import featureReducer from '../lib/context/FeatureContext/featureReducer';
+import CardProvider from '../lib/context/CardContext/cardProvider';
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+  cookie: any
+};
+
+function MyApp({ Component, pageProps, cookie }: AppPropsWithLayout) {
+  console.log(`Running on ${process.env.NODE_ENV} mode`);
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout ?? ((page) => page);
+
+  const queryClient = new QueryClient();
+
+  console.log(cookie)
+
   let data = [
     {
       cardTitle: 'Backlog',
@@ -106,36 +125,49 @@ const Board: NextPageWithLayout = () => {
     featureData
   );
 
-
-  return (
-    <DataContext.Provider value={data}>
-      <FeatureContext.Provider value={{ featureState, dispatchFeature }}>
-        <CardProvider>
-          <div className='fixed flex flex-col w-full h-full pt-2 px-2 bg-gray-800 bg-cover'>
-            <BoardComponent />
-          </div>
-        </CardProvider>
-      </FeatureContext.Provider>
-    </DataContext.Provider>
+  return getLayout(
+    <Fragment>
+      {/* <DataContext.Provider value={data}>
+        <FeatureContext.Provider value={{ featureState, dispatchFeature }}>
+          <CardProvider> */}
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} cookie={cookie} />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+      {/* </CardProvider>
+        </FeatureContext.Provider>
+      </DataContext.Provider> */}
+    </Fragment>
   );
-};
-
-Board.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};
-
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { board: 'something' } }],
-    fallback: false, // can also be true or 'blocking'
-  };
 }
 
-export async function getStaticProps() {
-  return {
-    // Passed to the page component as props
-    props: { post: {} },
-  };
-}
+// export async function getStaticPaths() {
+//   return {
+//     paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+//     fallback: false, // can also be true or 'blocking'
+//   };
+// }
 
-export default Board;
+// export async function getStaticProps(context: any) {
+//   const { req } = context;
+//   const { cookies } = req;
+//   console.log(context.req.cookies);
+//   return {
+//     // Passed to the page component as props
+//     props: { cookies },
+//   };
+// }
+
+export const getServerSideProps = (ctx: any) => {
+  const { req } = ctx;
+  const {cookie} = req.headers;
+
+  return {
+    props: {
+      cookie,
+    },
+  };
+};
+
+
+export default MyApp;

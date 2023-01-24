@@ -1,0 +1,35 @@
+import UserBoard from '../../../components/Users/UserBoard';
+// import { hasCookie, getCookies } from 'cookies-next';
+import { parseCookies } from 'nookies';
+import { convertTypeAcquisitionFromJson } from 'typescript';
+import { useRouter } from 'next/router';
+
+// interface IUserBoardPage {
+//   cookies: Cookie
+// }
+
+const UserBoardsPage = ({ cookie }: any) => {
+  // const router = useRouter();
+  // if (cookie === undefin) {
+  return <UserBoard />;
+  // } else {
+  //   router.push('auth/login');
+  // }
+};
+
+export default UserBoardsPage;
+
+export const getServerSideProps = (ctx: any) => {
+  const { req, res } = ctx;
+  const { cookie } = req.headers;
+
+  if (cookie) {
+    return {
+      props: {
+        cookie,
+      },
+    };
+  } else {
+    res.redirect('/auth/login');
+  }
+};
