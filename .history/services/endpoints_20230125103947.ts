@@ -14,7 +14,7 @@ export const endpoints = (path: string) => {
   const apiClient: AxiosInstance = axios.create({
     baseURL:
       NODE_ENV === 'production'
-        ? `https://taskaccio.onrender.com/api$/{path}`
+        ? `https://taskaccio.onrender.com/api/${path}`
         : `http://localhost:3001/api/${path}`,
     headers: {
       'Content-type': 'application/json',

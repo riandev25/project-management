@@ -2,10 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import { shallow } from 'zustand/shallow';
 import { IBoard } from '../interfaces/board.interface';
 import { ICreateBoard } from '../interfaces/user.interface';
-import { endpoints } from './endpoints';
+import { useEndpoints } from './endpoints';
 
 const useUserService = () => {
-  const apiClient = endpoints('boards');
+  const apiClient = useEndpoints('boards');
 
   const getBoard = async () => {
     try {

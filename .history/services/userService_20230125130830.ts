@@ -5,7 +5,7 @@ import { ICreateBoard } from '../interfaces/user.interface';
 import { endpoints } from './endpoints';
 
 const useUserService = () => {
-  const apiClient = endpoints('boards');
+  const apiClient = endpoints('/boards');
 
   const getBoard = async () => {
     try {

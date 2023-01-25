@@ -16,17 +16,17 @@ const BoardComponent = () => {
 
   if (board !== undefined) {
     idBoard = board[0];
-    localStorage.setItem('idBoard', JSON.stringify(idBoard));
+    localStorage.setItem('email', JSON.stringify(idBoard));
   }
 
-  const { data: listData, isSuccess } = useGetLists();
+  // const { data: datas, isSuccess } = useGetLists();
 
-  if (isSuccess) console.log(listData);
+  // if (isSuccess) console.log(datas);
 
-  // const stringifiedIdBoard = String(localStorage.getItem('idBoard'));
-  // const storedIdBoard = JSON.parse(stringifiedIdBoard);
+  const stringifiedIdBoard = String(localStorage.getItem('idBoard'));
+  const storedIdBoard = JSON.parse(stringifiedIdBoard);
 
-  // console.log(storedIdBoard);
+  console.log(storedIdBoard);
 
   return (
     <div className='flex flex-col gap-3'>

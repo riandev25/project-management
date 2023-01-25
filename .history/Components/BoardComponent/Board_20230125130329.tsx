@@ -19,9 +19,9 @@ const BoardComponent = () => {
     localStorage.setItem('idBoard', JSON.stringify(idBoard));
   }
 
-  const { data: listData, isSuccess } = useGetLists();
+  const { data: datas, isSuccess } = useGetLists();
 
-  if (isSuccess) console.log(listData);
+  if (isSuccess) console.log(datas);
 
   // const stringifiedIdBoard = String(localStorage.getItem('idBoard'));
   // const storedIdBoard = JSON.parse(stringifiedIdBoard);

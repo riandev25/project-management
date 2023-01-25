@@ -5,28 +5,13 @@ import { ProjectData } from '../../interfaces/data';
 import { useContext } from 'react';
 import { DataContext } from '../../lib/context/DataContext/DataContext';
 import { useGetLists } from '../../lib/hooks/list/useGetLists';
-import { useRouter } from 'next/router';
 
 const BoardComponent = () => {
   const data = useContext(DataContext);
 
-  const router = useRouter();
-  const { board } = router.query;
-  let idBoard;
+  const { data: datas, isSuccess } = useGetLists();
 
-  if (board !== undefined) {
-    idBoard = board[0];
-    localStorage.setItem('idBoard', JSON.stringify(idBoard));
-  }
-
-  const { data: listData, isSuccess } = useGetLists();
-
-  if (isSuccess) console.log(listData);
-
-  // const stringifiedIdBoard = String(localStorage.getItem('idBoard'));
-  // const storedIdBoard = JSON.parse(stringifiedIdBoard);
-
-  // console.log(storedIdBoard);
+  if (isSuccess) console.log(datas);
 
   return (
     <div className='flex flex-col gap-3'>

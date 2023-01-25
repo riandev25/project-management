@@ -50,7 +50,7 @@ const CardChild = ({ childTitle, labels, checklist }: CardChildren) => {
             onClick={onOpenFeature}
           >
             <div className='flex flex-col w-full gap-2 shadow-sm'>
-              {/* <ul className='grid grid-cols-5 gap-0.5'>
+              <ul className='grid grid-cols-5 gap-0.5'>
                 {labelState.map(({ id, bgColorStrip, isChecked }: ILabels) => {
                   return (
                     isChecked && (
@@ -61,7 +61,7 @@ const CardChild = ({ childTitle, labels, checklist }: CardChildren) => {
                     )
                   );
                 })}
-              </ul> */}
+              </ul>
               <section className='text-gray-700'>{childTitle}</section>
               <section className='text-gray-700'>
                 <FontAwesomeIcon icon={faPaperclip} size='sm' />

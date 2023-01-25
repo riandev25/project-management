@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
+import { shallow } from 'zustand/shallow';
+import { useAuthLoginStore } from '../store/authStore';
 
-export const endpoints = (path: string) => {
+export const useEndpoints = (path: string) => {
   // if (typeof window !== 'undefined') {
   const { NODE_ENV } = process.env;
 
@@ -14,7 +16,7 @@ export const endpoints = (path: string) => {
   const apiClient: AxiosInstance = axios.create({
     baseURL:
       NODE_ENV === 'production'
-        ? `https://taskaccio.onrender.com/api$/{path}`
+        ? `https://taskaccio.onrender.com/api/${path}`
         : `http://localhost:3001/api/${path}`,
     headers: {
       'Content-type': 'application/json',
