@@ -29,6 +29,7 @@ export const labelService = () => {
   const updateLabel = async (data: ILabel) => {
     try {
       const labelOptionId = getLocalStorage('labelOptionId');
+      console.log(labelOptionId);
       const response = await apiClient.patch(`${labelOptionId}`, data);
       return response.data;
     } catch (err) {
@@ -36,17 +37,7 @@ export const labelService = () => {
     }
   };
 
-  const deleteLabel = async () => {
-    try {
-      const labelOptionId = getLocalStorage('labelOptionId');
-      const response = await apiClient.delete(`${labelOptionId}`);
-      return response.data;
-    } catch (err) {
-      return err;
-    }
-  };
-
-  return { getLabels, createLabel, updateLabel, deleteLabel };
+  return { getLabels, createLabel, updateLabel };
 };
 
 export default labelService;

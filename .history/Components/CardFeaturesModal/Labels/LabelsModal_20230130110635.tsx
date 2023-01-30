@@ -14,14 +14,13 @@ import { useGetLabels } from '../../../lib/hooks/labels/useGetLabels';
 import { ILabel } from '../../../interfaces/label.interface';
 import {
   getLocalStorage,
-  removeLocalStorage,
   setLocalStorage,
 } from '../../../lib/utils/localStorage';
 import { labelStore } from '../../../store/labelStore';
 import { shallow } from 'zustand/shallow';
 import { useCreateLabel } from '../../../lib/hooks/labels/useCreateLabel';
 import { useUpdateLabel } from '../../../lib/hooks/labels/useUpdateLabel';
-import { produce } from 'immer';
+import { produce } from 'immer'
 // import { FeatureContext } from '../../../lib/context/FeatureContext/FeatureContext';
 
 const LabelsModal = () => {
@@ -89,21 +88,12 @@ const LabelsModal = () => {
   const closeLabelHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const _id = String(event.currentTarget.dataset.id);
     toggleFeatureModal(_id);
-  };
+  }; 
 
-  const {
-    data: labelData,
-    isError,
-    isSuccess,
-    isFetching,
-    refetch,
-  } = useGetLabels();
+  const { data: labelData, isError, isSuccess, isFetching } = useGetLabels();
   const { isLoading } = useCreateLabel();
-  const {
-    mutateAsync: updateMutate,
-    isSuccess: isUpdateSuccess,
-    isError: isUpdateError,
-  } = useUpdateLabel();
+  const { mutateAsync: updateMutate, isSuccess: isUpdateSuccess } =
+  useUpdateLabel();
 
   const {
     updateLabelOptionId,
@@ -127,19 +117,15 @@ const LabelsModal = () => {
     // closeLabelHandler();
   };
 
-  const updateLabelHandler = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const checked = event.target.checked;
-    const checkedData = checked === true ? true : false;
-    const id = String(event.currentTarget.dataset.id);
-    setLocalStorage('labelOptionId', id);
-    const res = await updateMutate({
-      isChecked: checkedData,
-    });
-    removeLocalStorage('labelOptionId');
-    refetch();
-  };
+  const updateLabelHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.currentTarget.dataset.checked
+    console.log(checked)
+    // const checkedData = 
+
+    // await updateMutate({
+      
+    // })
+  }
 
   return (
     <div className='absolute flex flex-col w-72 shadow-md rounded-sm bg-white px-3 py-2 gap-3'>
@@ -184,7 +170,7 @@ const LabelsModal = () => {
                       data-id={_id}
                       name={name}
                       value={name}
-                      checked={isChecked}
+                      data-checked={isChecked}
                       onChange={updateLabelHandler}
                     />
                     <DefaultBtn

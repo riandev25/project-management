@@ -5,8 +5,6 @@ import { FeatureContext } from '../../../lib/context/FeatureContext/featureProvi
 // import { FeatureContext } from '../../../lib/context/FeatureContext/FeatureContext';
 import { LabelContext } from '../../../lib/context/LabelContext/LabelContext';
 import { useCreateLabel } from '../../../lib/hooks/labels/useCreateLabel';
-import { useDeleteLabel } from '../../../lib/hooks/labels/useDeleteLabel';
-import { useGetLabels } from '../../../lib/hooks/labels/useGetLabels';
 import useLabelOption from '../../../lib/hooks/labels/useLabelOption';
 import { useUpdateLabel } from '../../../lib/hooks/labels/useUpdateLabel';
 import { getLocalStorage } from '../../../lib/utils/localStorage';
@@ -74,8 +72,6 @@ const LabelOption = ({
   const { mutateAsync } = useCreateLabel();
   const { mutateAsync: updateMutate, isSuccess: isUpdateSuccess } =
     useUpdateLabel();
-  const { mutateAsync: deleteMutate, isSuccess: isDeleteSuccess } =
-    useDeleteLabel();
 
   const createLabel = async () => {
     const idBoard = getLocalStorage('idBoard');
@@ -104,13 +100,9 @@ const LabelOption = ({
     refetch();
   };
 
-  const deleteLabel = async () => {
-    await deleteMutate();
-  };
-
   useEffect(() => {
-    if (isUpdateSuccess || isDeleteSuccess) backBtn();
-  }, [backBtn, isDeleteSuccess, isUpdateSuccess]);
+    if (isUpdateSuccess) backBtn();
+  }, [backBtn, isUpdateSuccess]);
 
   // Handlers
   // const backBtnHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -169,10 +161,10 @@ const LabelOption = ({
   //   onCreateData({ ...data, name: createTitle });
   // };
 
-  // const deleteLabel = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   const id = event.currentTarget.dataset.id;
-  //   onDeleteLabel(id);
-  // };
+  const deleteLabel = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const id = event.currentTarget.dataset.id;
+    onDeleteLabel(id);
+  };
 
   useEffect(() => {
     const filteredLabelColors = filteredColors({ LabelColors, colorBg });

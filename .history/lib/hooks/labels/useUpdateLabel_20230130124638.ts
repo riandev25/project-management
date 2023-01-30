@@ -24,10 +24,8 @@ export const useUpdateLabel = () => {
       );
     },
     // Always refetch after error or success:
-    onSettled: (newLabel) => {
-      console.log(newLabel._id);
-      queryClient.invalidateQueries(['labels', newLabel._id]);
-      console.log('after');
+    onSuccess: (newLabel) => {
+      queryClient.invalidateQueries({ queryKey: ['labels', newLabel._id] });
     },
   });
 

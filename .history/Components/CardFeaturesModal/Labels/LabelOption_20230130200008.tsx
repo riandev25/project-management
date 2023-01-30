@@ -74,8 +74,7 @@ const LabelOption = ({
   const { mutateAsync } = useCreateLabel();
   const { mutateAsync: updateMutate, isSuccess: isUpdateSuccess } =
     useUpdateLabel();
-  const { mutateAsync: deleteMutate, isSuccess: isDeleteSuccess } =
-    useDeleteLabel();
+  const { mutateAsync: deleteMutate } = useDeleteLabel();
 
   const createLabel = async () => {
     const idBoard = getLocalStorage('idBoard');
@@ -109,8 +108,8 @@ const LabelOption = ({
   };
 
   useEffect(() => {
-    if (isUpdateSuccess || isDeleteSuccess) backBtn();
-  }, [backBtn, isDeleteSuccess, isUpdateSuccess]);
+    if (isUpdateSuccess) backBtn();
+  }, [backBtn, isUpdateSuccess]);
 
   // Handlers
   // const backBtnHandler = (event: React.MouseEvent<HTMLButtonElement>) => {

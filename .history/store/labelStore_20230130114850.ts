@@ -20,6 +20,7 @@ export const labelStore = create<ILabelState>()((set, get) => ({
         state.labelOptionId = id;
       })
     );
+    console.log(id);
     setLocalStorage('labelOptionId', id);
   },
   resetLabelOptionId: () => {

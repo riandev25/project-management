@@ -25,9 +25,8 @@ export const useUpdateLabel = () => {
     },
     // Always refetch after error or success:
     onSettled: (newLabel) => {
-      console.log(newLabel._id);
+      console.log(`This is ${newLabel} in settled`);
       queryClient.invalidateQueries(['labels', newLabel._id]);
-      console.log('after');
     },
   });
 

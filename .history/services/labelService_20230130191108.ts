@@ -46,7 +46,7 @@ export const labelService = () => {
     }
   };
 
-  return { getLabels, createLabel, updateLabel, deleteLabel };
+  return { getLabels, createLabel, updateLabel };
 };
 
 export default labelService;

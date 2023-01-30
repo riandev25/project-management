@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import labelService from '../../../services/labelService';
+import checklistService from '../../../services/checklistService';
 
-export const useGetLabels = () => {
+export const useGetChecklists = () => {
   const { data, isSuccess, isError, isFetching, refetch } = useQuery({
-    queryKey: ['labels'],
-    queryFn: labelService().getLabels,
+    queryKey: ['checklists'],
+    queryFn: checklistService().getChecklists,
   });
 
   return { data, isError, isSuccess, isFetching, refetch };

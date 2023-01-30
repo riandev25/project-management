@@ -135,7 +135,7 @@ const LabelsModal = () => {
     const id = String(event.currentTarget.dataset.id);
     setLocalStorage('labelOptionId', id);
     const res = await updateMutate({
-      isChecked: checkedData,
+      isChecked: true,
     });
     removeLocalStorage('labelOptionId');
     refetch();

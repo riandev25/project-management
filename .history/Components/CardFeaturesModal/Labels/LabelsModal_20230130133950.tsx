@@ -91,19 +91,10 @@ const LabelsModal = () => {
     toggleFeatureModal(_id);
   };
 
-  const {
-    data: labelData,
-    isError,
-    isSuccess,
-    isFetching,
-    refetch,
-  } = useGetLabels();
+  const { data: labelData, isError, isSuccess, isFetching } = useGetLabels();
   const { isLoading } = useCreateLabel();
-  const {
-    mutateAsync: updateMutate,
-    isSuccess: isUpdateSuccess,
-    isError: isUpdateError,
-  } = useUpdateLabel();
+  const { mutateAsync: updateMutate, isSuccess: isUpdateSuccess } =
+    useUpdateLabel();
 
   const {
     updateLabelOptionId,
@@ -135,10 +126,10 @@ const LabelsModal = () => {
     const id = String(event.currentTarget.dataset.id);
     setLocalStorage('labelOptionId', id);
     const res = await updateMutate({
-      isChecked: checkedData,
+      isChecked: false,
     });
+    // console.log(checked);
     removeLocalStorage('labelOptionId');
-    refetch();
   };
 
   return (

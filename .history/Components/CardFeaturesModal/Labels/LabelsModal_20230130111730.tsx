@@ -14,7 +14,6 @@ import { useGetLabels } from '../../../lib/hooks/labels/useGetLabels';
 import { ILabel } from '../../../interfaces/label.interface';
 import {
   getLocalStorage,
-  removeLocalStorage,
   setLocalStorage,
 } from '../../../lib/utils/localStorage';
 import { labelStore } from '../../../store/labelStore';
@@ -91,19 +90,10 @@ const LabelsModal = () => {
     toggleFeatureModal(_id);
   };
 
-  const {
-    data: labelData,
-    isError,
-    isSuccess,
-    isFetching,
-    refetch,
-  } = useGetLabels();
+  const { data: labelData, isError, isSuccess, isFetching } = useGetLabels();
   const { isLoading } = useCreateLabel();
-  const {
-    mutateAsync: updateMutate,
-    isSuccess: isUpdateSuccess,
-    isError: isUpdateError,
-  } = useUpdateLabel();
+  const { mutateAsync: updateMutate, isSuccess: isUpdateSuccess } =
+    useUpdateLabel();
 
   const {
     updateLabelOptionId,
@@ -130,15 +120,13 @@ const LabelsModal = () => {
   const updateLabelHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const checked = event.target.checked;
-    const checkedData = checked === true ? true : false;
-    const id = String(event.currentTarget.dataset.id);
-    setLocalStorage('labelOptionId', id);
-    const res = await updateMutate({
-      isChecked: checkedData,
-    });
-    removeLocalStorage('labelOptionId');
-    refetch();
+    const checked = event.currentTarget.dataset.checked;
+    console.log(typeof checked);
+    // const checkedData =
+
+    // await updateMutate({
+
+    // })
   };
 
   return (
@@ -184,7 +172,7 @@ const LabelsModal = () => {
                       data-id={_id}
                       name={name}
                       value={name}
-                      checked={isChecked}
+                      data-checked={isChecked}
                       onChange={updateLabelHandler}
                     />
                     <DefaultBtn

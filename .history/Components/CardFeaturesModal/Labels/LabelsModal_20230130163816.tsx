@@ -131,7 +131,7 @@ const LabelsModal = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const checked = event.target.checked;
-    const checkedData = checked === true ? true : false;
+    const checkedData = checked === true ? false : true;
     const id = String(event.currentTarget.dataset.id);
     setLocalStorage('labelOptionId', id);
     const res = await updateMutate({

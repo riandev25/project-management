@@ -6,6 +6,7 @@ export const useUpdateLabel = () => {
   const { data, isSuccess, isError, mutateAsync, isLoading } = useMutation({
     mutationFn: labelService().updateLabel,
     onMutate: async (newLabel) => {
+      console.log(newLabel);
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: ['labels', newLabel._id] });
@@ -25,9 +26,8 @@ export const useUpdateLabel = () => {
     },
     // Always refetch after error or success:
     onSettled: (newLabel) => {
-      console.log(newLabel._id);
+      console.log(newLabel);
       queryClient.invalidateQueries(['labels', newLabel._id]);
-      console.log('after');
     },
   });
 
