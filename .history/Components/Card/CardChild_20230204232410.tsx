@@ -19,17 +19,28 @@ import { boardStore } from '../../store/boardStore';
 import React from 'react';
 import { setLocalStorage } from '../../lib/utils/localStorage';
 import { shallow } from 'zustand/shallow';
-import CardOptions from './CardOptions';
 
 const CardChild = ({ cardName, _id: idCard }: IBoardCardData) => {
-  const ACTIONS = [
-    'Add card...',
-    'Copy list...',
-    'Move list...',
-    'Watch',
-    'Sort by...',
-    'Archive this list',
-  ];
+  const { dispatchFeature } = useContext(FeatureContext);
+  // const isFeatureOpen = featureState[0].isOpen;
+
+  const { isFeatureOpen } = useFeatureState();
+
+  // const [labelState, dispatchLabel] = useReducer(labelReducer, labels);
+  // const [checklistData, dispatchChecklist] = useReducer(
+  //   checklistReducer,
+  //   checklist
+  // );
+
+  const onOpenFeature = (
+    event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+  ) => {
+    const id = event.currentTarget.dataset.id;
+    dispatchFeature({
+      type: 'TOGGLE_FEATURE',
+      payload: { id: id },
+    });
+  };
 
   const { modalState, toggleModal } = boardStore(
     (state) => ({
@@ -54,7 +65,15 @@ const CardChild = ({ cardName, _id: idCard }: IBoardCardData) => {
 
   return (
     <Fragment>
-      <div className='flex flex-row py-2 px-2 rounded-sm bg-white cursor-pointer hover:bg-gray-100'>
+      {/* <LabelContext.Provider value={{ labelState, dispatchLabel }}>
+        <ChecklistContext.Provider value={{ checklistData, dispatchChecklist }}> */}
+      {/* <Link href='/board/something/card/newa'> */}
+      <div
+        // data-id={idCard}
+        className='flex flex-row py-2 px-2 rounded-sm bg-white cursor-pointer hover:bg-gray-100'
+        // onClick={openFeatureModal}
+        // onClick={onOpenFeature}
+      >
         <div
           data-id={idCard}
           onClick={openFeatureModal}
@@ -77,18 +96,18 @@ const CardChild = ({ cardName, _id: idCard }: IBoardCardData) => {
             <FontAwesomeIcon icon={faPaperclip} size='sm' />
           </section>
         </div>
-        <div className='relative flex items-center'>
-          <button type='button' className='px-1 hover:bg-white'>
-            <FontAwesomeIcon icon={faEllipsis} />
-          </button>
-          <CardOptions _id={idCard} actions={ACTIONS} />
-        </div>
+        <button type='button'>
+          <FontAwesomeIcon icon={faEllipsis} />
+        </button>
       </div>
+      {/* </Link> */}
       {filteredModal?.isOpen && (
         <Portal portalId='#myportal'>
           <CardFeaturesModal _id={idCard} />
         </Portal>
       )}
+      {/* </ChecklistContext.Provider>
+      </LabelContext.Provider> */}
     </Fragment>
   );
 };

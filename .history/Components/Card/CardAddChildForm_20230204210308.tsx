@@ -1,6 +1,6 @@
 import { faXmark, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useGetLists } from '../../lib/hooks/list/useGetLists';
 import { useUpdateAddList } from '../../lib/hooks/list/useUpdateAddList';
@@ -26,11 +26,8 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
   // List data fetching
 
   const { refetch } = useGetLists();
-  const {
-    mutateAsync: mutateUpdateList,
-    isLoading: isUpdateLoading,
-    isSuccess: isUpdateSuccess,
-  } = useUpdateAddList();
+  const { mutateAsync: mutateUpdateList, isLoading: isUpdateLoading } =
+    useUpdateAddList();
 
   // Handlers
 
@@ -42,16 +39,12 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const _id = String(event.currentTarget.dataset.id);
     await mutateUpdateList({ cardName: addChild });
+    refetch();
+    removeLocalStorage('idList');
+    toggleAddCard(_id);
   };
-
-  useEffect(() => {
-    if (isUpdateSuccess) {
-      refetch();
-      removeLocalStorage('idList');
-      toggleAddCard(String(_id));
-    }
-  }, [_id, isUpdateSuccess, refetch, toggleAddCard]);
 
   return (
     <form

@@ -12,19 +12,20 @@ import { IBoardData } from '../../interfaces/board.interface';
 import { shallow } from 'zustand/shallow';
 import { listStore } from '../../store/listStore';
 import { setLocalStorage } from '../../lib/utils/localStorage';
+import { useUpdateList } from '../../lib/hooks/list/useUpdateAddList';
 
 const Card = ({ cards, listName, _id }: IBoardData) => {
-  
-  const ACTIONS = [
-    'Add card...',
-    'Copy list...',
-    'Move list...',
-    'Watch',
-    'Sort by...',
-    'Archive this list',
-  ];
+  const {
+    CardState,
+    openCardChildForm,
+    closeCardChildForm,
+    openCardOption,
+    closeCardOption,
+  } = useContext(CardContext);
+  // const { isFormOpen, isOptionOpen } = CardState;
 
   const router = useRouter();
+  const path = router.asPath.slice(1, 2);
 
   const { listState, toggleCardOption, toggleAddCard } = listStore(
     (state) => ({
@@ -67,7 +68,7 @@ const Card = ({ cards, listName, _id }: IBoardData) => {
         <button
           type='button'
           data-id={_id}
-          className='h-full px-1.5 hover:bg-white'
+          className='h-full px-1.5 hover:bg-gray-400'
           onClick={toggleCardOptionHandler}
         >
           <FontAwesomeIcon icon={faEllipsis} />
@@ -103,7 +104,7 @@ const Card = ({ cards, listName, _id }: IBoardData) => {
         </section>
       )}
       {isAddCardOpen && <CardAddChildForm _id={_id} />}
-      {isOptionOpen && <CardOptions _id={_id} actions={ACTIONS} />}
+      {isOptionOpen && <CardOptions _id={_id} />}
     </div>
   );
 };

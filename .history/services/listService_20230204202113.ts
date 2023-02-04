@@ -9,14 +9,13 @@ interface ICreateList {
 }
 
 export const listService = () => {
-  const apiClient = endpoints('lists');
-  const apiGetClient = endpoints('');
+  const apiClient = endpoints('');
 
   const getLists = async () => {
     try {
       const stringifiedIdBoard = String(localStorage.getItem('idBoard'));
       const storedIdBoard = JSON.parse(stringifiedIdBoard);
-      const response = await apiGetClient.get(`lists?idBoard=${storedIdBoard}`);
+      const response = await apiClient.get(`lists?idBoard=${storedIdBoard}`);
       return response.data;
     } catch (err) {
       return err;
@@ -35,7 +34,7 @@ export const listService = () => {
   const updateList = async (data: IBoardData | IBoardCardData) => {
     try {
       const id = getLocalStorage('idList');
-      const response = await apiClient.patch(`${id}?addCard=true`, data);
+      const response = await apiClient.patch(`${id}`, data);
       return response.data;
     } catch (err) {
       return err;

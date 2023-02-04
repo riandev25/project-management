@@ -67,7 +67,7 @@ const Card = ({ cards, listName, _id }: IBoardData) => {
         <button
           type='button'
           data-id={_id}
-          className='h-full px-1.5 hover:bg-white'
+          className='h-full px-1.5 hover:bg-gray-400'
           onClick={toggleCardOptionHandler}
         >
           <FontAwesomeIcon icon={faEllipsis} />

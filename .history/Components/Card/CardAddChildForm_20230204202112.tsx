@@ -1,10 +1,8 @@
 import { faXmark, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { useGetLists } from '../../lib/hooks/list/useGetLists';
-import { useUpdateAddList } from '../../lib/hooks/list/useUpdateAddList';
-import { removeLocalStorage } from '../../lib/utils/localStorage';
+import { useUpdateList } from '../../lib/hooks/list/useUpdateList';
 import { listStore } from '../../store/listStore';
 
 interface ICardChildForm {
@@ -25,33 +23,21 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
 
   // List data fetching
 
-  const { refetch } = useGetLists();
-  const {
-    mutateAsync: mutateUpdateList,
-    isLoading: isUpdateLoading,
-    isSuccess: isUpdateSuccess,
-  } = useUpdateAddList();
+  const {mutateAsync: mutateUpdateList} = useUpdateList()
 
   // Handlers
 
   const toggleAddCardHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     const _id = String(event.currentTarget.dataset.id);
-    removeLocalStorage('idList');
+    mutateUpdateList({cardName: addChild})
     toggleAddCard(_id);
   };
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await mutateUpdateList({ cardName: addChild });
+    const _id = String(event.currentTarget.dataset.id);
+    toggleAddCard(_id);
   };
-
-  useEffect(() => {
-    if (isUpdateSuccess) {
-      refetch();
-      removeLocalStorage('idList');
-      toggleAddCard(String(_id));
-    }
-  }, [_id, isUpdateSuccess, refetch, toggleAddCard]);
 
   return (
     <form
@@ -69,7 +55,6 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
           <button
             data-id={_id}
             type='submit'
-            disabled={isUpdateLoading}
             className='bg-blue-600 py-1.5 px-2 rounded-sm text-white hover:bg-blue-700'
           >
             Add card
@@ -83,7 +68,7 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
             <FontAwesomeIcon icon={faXmark} size='2x' />
           </button>
         </section>
-        <button type='button' disabled={isUpdateLoading}>
+        <button type='button'>
           <FontAwesomeIcon icon={faEllipsis} />
         </button>
       </div>
