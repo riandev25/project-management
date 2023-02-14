@@ -7,6 +7,10 @@ import { useUpdateAddList } from '../../lib/hooks/list/useUpdateAddList';
 import { removeLocalStorage } from '../../lib/utils/localStorage';
 import { listStore } from '../../store/listStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { useUpdateCard } from '../../lib/hooks/list/useUpdateCard';
+import TextWithSpinner from '../../UI/Loading/TextWithSpinner';
+import { listIdStore } from '../../store/cardStore';
+import { useCreateCard } from '../../lib/hooks/list/useCreateCard';
 
 interface ICardChildForm {
   _id?: string;
@@ -24,15 +28,36 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
     shallow
   );
 
+  // const { idList, removeIdList } = listIdStore(
+  //   (state) => ({
+  //     idList: state.idList,
+  //     removeIdList: state.removeIdList,
+  //   }),
+  //   shallow
+  // );
+
   // List data fetching
 
-  const queryClient = useQueryClient();
-  const { refetch } = useGetLists();
+  // const queryClient = useQueryClient();
+  // const { refetch } = useGetLists();
+  // const {
+  //   mutateAsync: mutateUpdateList,
+  //   isLoading: isUpdateLoading,
+  //   isSuccess: isUpdateSuccess,
+  // } = useUpdateAddList();
+
   const {
-    mutateAsync: mutateUpdateList,
-    isLoading: isUpdateLoading,
-    isSuccess: isUpdateSuccess,
-  } = useUpdateAddList();
+    mutateAsync: mutateCreateCard,
+    isLoading: isCreateCardLoading,
+    isSuccess: isCreateCardSuccess,
+  } = useCreateCard();
+
+  // const {
+  //   data,
+  //   mutateAsync: mutateUpdateCard,
+  //   isSuccess: isUpdateSuccess,
+  //   isLoading: isUpdateLoading,
+  // } = useUpdateCard();
 
   // Handlers
 
@@ -44,16 +69,16 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await mutateUpdateList({ cardName: addChild });
+    const a = await mutateCreateCard({ cardName: addChild, _id });
   };
 
   useEffect(() => {
-    if (isUpdateSuccess && !isUpdateLoading) {
+    if (isCreateCardSuccess && !isCreateCardLoading) {
       console.log('success');
-      removeLocalStorage('idList');
+      // removeLocalStorage('idList');
       toggleAddCard(String(_id));
     }
-  }, [_id, isUpdateLoading, isUpdateSuccess, toggleAddCard]);
+  }, [_id, isCreateCardLoading, isCreateCardSuccess, toggleAddCard]);
 
   return (
     <form
@@ -71,10 +96,14 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
           <button
             data-id={_id}
             type='submit'
-            disabled={isUpdateLoading}
+            disabled={isCreateCardLoading}
             className='bg-blue-600 py-1.5 px-2 rounded-sm text-white hover:bg-blue-700'
           >
-            Add card
+            {isCreateCardLoading ? (
+              <TextWithSpinner text='Creating' />
+            ) : (
+              'Create'
+            )}
           </button>
           <button
             type='button'
@@ -85,9 +114,6 @@ const CardAddChildForm = ({ _id }: ICardChildForm) => {
             <FontAwesomeIcon icon={faXmark} size='2x' />
           </button>
         </section>
-        <button type='button' disabled={isUpdateLoading}>
-          <FontAwesomeIcon icon={faEllipsis} />
-        </button>
       </div>
     </form>
   );

@@ -1,0 +1,52 @@
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+interface IActions {
+  name: string;
+  action: () => void;
+}
+
+interface IListOptions {
+  _id: string;
+  pos: string;
+  actions: IActions[];
+}
+
+const ListOptions = ({ _id, pos, actions }: IListOptions) => {
+  // Event handlers
+  const toggleHandler = () => {};
+
+  return (
+    <div
+      className={`absolute ${pos} shadow-md bg-white rounded-sm text-gray-500`}
+    >
+      <header className='relative py-2 mx-2 border-b text-center'>
+        <h2 className='font-semibold'>List of Actions</h2>
+        <button
+          type='button'
+          data-id={_id}
+          className='absolute top-1/2 right-0 transition-opacity hover:text-gray-400'
+          onClick={toggleHandler}
+        >
+          <FontAwesomeIcon icon={faXmark} size='lg' />
+        </button>
+      </header>
+      <section className='flex flex-col'>
+        {actions.map(({ name, action }, i) => {
+          return (
+            <button
+              key={i}
+              type='button'
+              className='w-full p-2'
+              onClick={action}
+            >
+              {name}
+            </button>
+          );
+        })}
+      </section>
+    </div>
+  );
+};
+
+export default ListOptions;
