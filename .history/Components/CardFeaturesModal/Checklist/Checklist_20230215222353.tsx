@@ -164,7 +164,7 @@ import {
   IChecklistArrays,
 } from '../../../interfaces/checklist';
 import AddItemCheckList from './AddItemCheckList';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ChecklistContext } from '../../../lib/context/ChecklistContext/ChecklistContext';
 import { NoIconBtn } from '../../../UI/Buttons/Buttons';
 import ChecklistOptions from './ChecklistOptions';
@@ -221,41 +221,13 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   const isAddCheckitem = filterChecklist(checklistState, _id, 'addCheckitem');
 
   // // Get checklist items of a single checklist
-  // const filteredCheckItem = checkitem.filter(
-  //   (checkitem) => checkitem.idChecklist === _id
-  // );
-  const filteredCheckItem = useMemo(() => {
-    return checkitem.filter((checkitem) => checkitem.idChecklist === _id);
-  }, [checkitem, _id]);
-
-  const [checkitemData, setCheckitemData] = useState<Array<ICheckitemObject>>(
-    filteredCheckItem || []
+  const filteredCheckItem = checkitem.filter(
+    (checkitem) => checkitem.idChecklist === _id
   );
 
-  useEffect(() => {
-    const arrayIdsOrder = getLocalStorage('taskOrder');
-
-    if (!arrayIdsOrder && filteredCheckItem?.length) {
-      const idsOrderArray = filteredCheckItem.map((task) => task._id);
-      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-    }
-
-    let myArray;
-    if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-      myArray = arrayIdsOrder.map((pos: any) => {
-        return filteredCheckItem.find((el) => el._id === pos);
-      });
-
-      const newItems = filteredCheckItem.filter((el) => {
-        return !arrayIdsOrder.includes(el._id);
-      });
-      console.log(newItems);
-
-      if (newItems?.length) myArray = [...newItems, ...myArray];
-    }
-
-    setCheckitemData(myArray || filteredCheckItem);
-  }, [filteredCheckItem]);
+  // const [todos, updateTodos] =
+  //   useState<Array<ICheckitemObject>>(filteredCheckItem);
+  updateDragDrop(filteredCheckItem);
 
   // Checklist data fetching
   const { mutateAsync: updateMutate } = useUpdateCheckitem();
@@ -285,6 +257,12 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const id = String(event.currentTarget.dataset.id);
+    const arrayIdsOrder = getLocalStorage('taskOrder');
+
+    if (arrayIdsOrder?.length) {
+      const newIdsOrderArray = arrayIdsOrder.filter((num: any) => num !== id);
+      setLocalStorage('taskOrder', newIdsOrderArray);
+    }
     deleteItemMutate(id);
     deleteListMutate(id);
   };
@@ -292,8 +270,8 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   const handleOnDragEnd = (result: DropResult) => {
     if (!result?.destination) return;
 
-    if (checkitemData !== undefined) {
-      const tasks = [...checkitemData];
+    if (checkitemDragDrop !== undefined) {
+      const tasks = [...checkitemDragDrop];
 
       const [reorderedItem] = tasks.splice(result.source.index, 1);
 
@@ -302,70 +280,81 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
       const idsOrderArray = tasks.map((task) => task._id);
       localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
 
-      setCheckitemData(tasks);
+      updateDragDrop(tasks);
+      // updateTodos(tasks);
     }
   };
 
   // Update order
+  // useEffect(() => {
+  //   updateDragDrop(filteredCheckItem);
+  // }, []);
 
   // useEffect(() => {
   //   const arrayIdsOrder = getLocalStorage('taskOrder');
 
-  //   if (!arrayIdsOrder && checkitemData?.length) {
-  //     const idsOrderArray = checkitemData.map((task) => task._id);
+  //   // Only proceed if todos exist and arrayIdsOrder does not exist
+  //   if (checkitemDragDrop && checkitemDragDrop.length && !arrayIdsOrder) {
+  //     const idsOrderArray = checkitemDragDrop.map((task) => task._id);
   //     localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
+  //     return; // Exit early
   //   }
 
   //   let myArray;
-  //   if (arrayIdsOrder?.length && checkitemData?.length) {
+  //   // Only proceed if both todos and arrayIdsOrder exist and have length
+  //   if (
+  //     checkitemDragDrop &&
+  //     checkitemDragDrop.length &&
+  //     arrayIdsOrder &&
+  //     arrayIdsOrder.length
+  //   ) {
   //     myArray = arrayIdsOrder.map((pos: any) => {
-  //       return checkitemData.find((el) => el._id === pos);
+  //       return checkitemDragDrop.filter((el) => el._id === pos);
   //     });
 
-  //     const newItems = checkitemData.filter((el) => {
-  //       return !arrayIdsOrder.includes(el._id);
-  //     });
-
-  //     if (newItems?.length) myArray = [...newItems, ...myArray];
-  //   }
-  //   console.log(myArray);
-
-  //   setCheckitemData(myArray || checkitemData);
-  // }, [checkitemData, filteredCheckItem]);
-
-  // useEffect(() => {
-  //   const arrayIdsOrder = getArrayLocalStorage('taskOrder');
-
-  //   if (!arrayIdsOrder && filteredCheckItem?.length) {
-  //     const idsOrderArray = filteredCheckItem.map((task) => task._id);
-  //     localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-  //   }
-
-  //   let myArray: any;
-  //   if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-  //     myArray = arrayIdsOrder.map((pos) => {
-  //       return filteredCheckItem.find((el) => el._id === pos);
-  //     });
-
-  //     const newItems = filteredCheckItem.filter((el) => {
+  //     const newItems = checkitemDragDrop.filter((el) => {
   //       if (el._id !== undefined) return !arrayIdsOrder.includes(el._id);
   //     });
 
-  //     if (newItems?.length) myArray = [...newItems, ...myArray];
+  //     if (newItems?.length) {
+  //       updateDragDrop([...newItems, ...myArray]);
+  //     } else {
+  //       updateDragDrop(myArray);
+  //     }
   //   }
-  //   updateDragDrop(myArray || filteredCheckItem);
-  // }, [filteredCheckItem, updateDragDrop]);
+  // }, [checkitemDragDrop, updateDragDrop]);
+
+  useEffect(() => {
+    const arrayIdsOrder = getArrayLocalStorage('taskOrder');
+
+    if (!arrayIdsOrder && checkitemDragDrop?.length) {
+      const idsOrderArray = checkitemDragDrop.map((task) => task._id);
+      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
+    }
+
+    let myArray: any;
+    if (arrayIdsOrder?.length && checkitemDragDrop?.length) {
+      myArray = arrayIdsOrder.map((pos) => {
+        return checkitemDragDrop.find((el) => el._id === pos);
+      });
+
+      const newItems = checkitemDragDrop.filter((el) => {
+        if (el._id !== undefined) return !arrayIdsOrder.includes(el._id);
+      });
+
+      if (newItems?.length) myArray = [...newItems, ...myArray];
+    }
+    updateDragDrop(myArray || checkitemDragDrop);
+  }, [checkitemDragDrop, updateDragDrop]);
 
   // Update percentage completion of checklist
-  useEffect(() => {
-    const filteredCheckItem = checkitem.filter(
-      (checkitem) => checkitem.idChecklist === _id
-    );
-    const percent = getChecklistPercentage(filteredCheckItem);
-    setPercentages(percent);
-  }, [_id, checkitem]);
-
-  console.log(checkitemData);
+  // useEffect(() => {
+  //   const filteredCheckItem = checkitem.filter(
+  //     (checkitem) => checkitem.idChecklist === _id
+  //   );
+  //   const percent = getChecklistPercentage(filteredCheckItem);
+  //   setPercentages(percent);
+  // }, [_id, checkitem]);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -395,7 +384,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {checkitemData.map((item, i) => {
+                {checkitemDragDrop.map((item, i) => {
                   return (
                     <Draggable
                       key={item._id}
@@ -434,7 +423,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
           </Droppable>
         </DragDropContext>
         <section className='flex flex-col'>
-          {checkitemData.length < 1 ? (
+          {checkitemDragDrop.length > 0 ? (
             <div className='text-center'>
               <p className='text-sm'>
                 Checklist not found. Add checklist item using the button below.

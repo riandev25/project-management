@@ -26,13 +26,6 @@ const ChecklistArray = () => {
     shallow
   );
 
-  const { idCard } = cardIdStore(
-    (state) => ({
-      idCard: state.idCard,
-    }),
-    shallow
-  );
-
   // Get checklist and checkitem data fetching
   const { data: checklistData, isLoading: isChecklistLoading } =
     useGetChecklists();
@@ -57,10 +50,10 @@ const ChecklistArray = () => {
   if (isChecklistLoading && isCheckitemLoading) return <p></p>;
 
   if (checklistData && checkitemData) {
+    console.log(checkitemData);
     const combinedChecklistData = combinedChecklist(
       checklistData,
-      checkitemData,
-      idCard
+      checkitemData
     );
     return (
       <ul className='flex flex-col gap-8'>

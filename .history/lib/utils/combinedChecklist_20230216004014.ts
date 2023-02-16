@@ -7,7 +7,7 @@ export const combinedChecklist = (
   checkitemData: any,
   idCard?: string
 ): IChecklistArrays[] => {
-  console.log(checkitemData[0]);
+  console.log(checkitemData);
   return checklistData.map((checklist: any) => {
     const filteredCheckItem = checkitemData.filter(
       (checkitem: any) => checkitem.idCard === idCard

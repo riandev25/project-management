@@ -4,10 +4,13 @@ import { getLocalStorage } from './localStorage';
 
 export const combinedChecklist = (
   checklistData: any,
-  checkitemData: any,
-  idCard?: string
+  checkitemData: any
 ): IChecklistArrays[] => {
-  console.log(checkitemData[0]);
+  const { idCard } = cardIdStore((state) => ({
+    idCard: state.idCard,
+  }));
+  console.log(checkitemData);
+
   return checklistData.map((checklist: any) => {
     const filteredCheckItem = checkitemData.filter(
       (checkitem: any) => checkitem.idCard === idCard

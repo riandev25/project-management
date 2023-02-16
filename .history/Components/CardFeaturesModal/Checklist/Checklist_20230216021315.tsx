@@ -164,7 +164,7 @@ import {
   IChecklistArrays,
 } from '../../../interfaces/checklist';
 import AddItemCheckList from './AddItemCheckList';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ChecklistContext } from '../../../lib/context/ChecklistContext/ChecklistContext';
 import { NoIconBtn } from '../../../UI/Buttons/Buttons';
 import ChecklistOptions from './ChecklistOptions';
@@ -221,41 +221,12 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   const isAddCheckitem = filterChecklist(checklistState, _id, 'addCheckitem');
 
   // // Get checklist items of a single checklist
-  // const filteredCheckItem = checkitem.filter(
-  //   (checkitem) => checkitem.idChecklist === _id
-  // );
-  const filteredCheckItem = useMemo(() => {
-    return checkitem.filter((checkitem) => checkitem.idChecklist === _id);
-  }, [checkitem, _id]);
-
-  const [checkitemData, setCheckitemData] = useState<Array<ICheckitemObject>>(
-    filteredCheckItem || []
+  const filteredCheckItem = checkitem.filter(
+    (checkitem) => checkitem.idChecklist === _id
   );
 
-  useEffect(() => {
-    const arrayIdsOrder = getLocalStorage('taskOrder');
-
-    if (!arrayIdsOrder && filteredCheckItem?.length) {
-      const idsOrderArray = filteredCheckItem.map((task) => task._id);
-      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-    }
-
-    let myArray;
-    if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-      myArray = arrayIdsOrder.map((pos: any) => {
-        return filteredCheckItem.find((el) => el._id === pos);
-      });
-
-      const newItems = filteredCheckItem.filter((el) => {
-        return !arrayIdsOrder.includes(el._id);
-      });
-      console.log(newItems);
-
-      if (newItems?.length) myArray = [...newItems, ...myArray];
-    }
-
-    setCheckitemData(myArray || filteredCheckItem);
-  }, [filteredCheckItem]);
+  const [checkitemData, setCheckitemData] =
+    useState<Array<ICheckitemObject>>(filteredCheckItem);
 
   // Checklist data fetching
   const { mutateAsync: updateMutate } = useUpdateCheckitem();
@@ -285,6 +256,12 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const id = String(event.currentTarget.dataset.id);
+    const arrayIdsOrder = getLocalStorage('taskOrder');
+
+    if (arrayIdsOrder?.length) {
+      const newIdsOrderArray = arrayIdsOrder.filter((num: any) => num !== id);
+      setLocalStorage('taskOrder', newIdsOrderArray);
+    }
     deleteItemMutate(id);
     deleteListMutate(id);
   };
@@ -303,35 +280,39 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
       localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
 
       setCheckitemData(tasks);
+      // updateTodos(tasks);
     }
   };
 
   // Update order
-
   // useEffect(() => {
-  //   const arrayIdsOrder = getLocalStorage('taskOrder');
+  //   updateDragDrop(filteredCheckItem);
+  // }, []);
 
-  //   if (!arrayIdsOrder && checkitemData?.length) {
-  //     const idsOrderArray = checkitemData.map((task) => task._id);
-  //     localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-  //   }
+  useEffect(() => {
+    const arrayIdsOrder = getLocalStorage('taskOrder');
 
-  //   let myArray;
-  //   if (arrayIdsOrder?.length && checkitemData?.length) {
-  //     myArray = arrayIdsOrder.map((pos: any) => {
-  //       return checkitemData.find((el) => el._id === pos);
-  //     });
+    if (!arrayIdsOrder && checkitemData?.length) {
+      const idsOrderArray = checkitemData.map((task) => task._id);
+      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
+    }
 
-  //     const newItems = checkitemData.filter((el) => {
-  //       return !arrayIdsOrder.includes(el._id);
-  //     });
+    let myArray;
+    if (arrayIdsOrder?.length && checkitemData?.length) {
+      myArray = arrayIdsOrder.map((pos: any) => {
+        return checkitemData.find((el) => el._id === pos);
+      });
 
-  //     if (newItems?.length) myArray = [...newItems, ...myArray];
-  //   }
-  //   console.log(myArray);
+      const newItems = checkitemData.filter((el) => {
+        return !arrayIdsOrder.includes(el._id);
+      });
 
-  //   setCheckitemData(myArray || checkitemData);
-  // }, [checkitemData, filteredCheckItem]);
+      if (newItems?.length) myArray = [...newItems, ...myArray];
+    }
+    console.log(checkitemData);
+
+    setCheckitemData(myArray || checkitemData);
+  }, [checkitemData]);
 
   // useEffect(() => {
   //   const arrayIdsOrder = getArrayLocalStorage('taskOrder');
@@ -357,15 +338,13 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   // }, [filteredCheckItem, updateDragDrop]);
 
   // Update percentage completion of checklist
-  useEffect(() => {
-    const filteredCheckItem = checkitem.filter(
-      (checkitem) => checkitem.idChecklist === _id
-    );
-    const percent = getChecklistPercentage(filteredCheckItem);
-    setPercentages(percent);
-  }, [_id, checkitem]);
-
-  console.log(checkitemData);
+  // useEffect(() => {
+  //   const filteredCheckItem = checkitem.filter(
+  //     (checkitem) => checkitem.idChecklist === _id
+  //   );
+  //   const percent = getChecklistPercentage(filteredCheckItem);
+  //   setPercentages(percent);
+  // }, [_id, checkitem]);
 
   return (
     <div className='flex flex-col gap-4'>

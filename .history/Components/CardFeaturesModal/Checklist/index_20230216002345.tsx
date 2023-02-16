@@ -57,6 +57,7 @@ const ChecklistArray = () => {
   if (isChecklistLoading && isCheckitemLoading) return <p></p>;
 
   if (checklistData && checkitemData) {
+    console.log(checkitemData);
     const combinedChecklistData = combinedChecklist(
       checklistData,
       checkitemData,

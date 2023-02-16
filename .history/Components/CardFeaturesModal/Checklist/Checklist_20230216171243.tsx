@@ -397,11 +397,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
               >
                 {checkitemData.map((item, i) => {
                   return (
-                    <Draggable
-                      key={item._id}
-                      draggableId={String(item._id)}
-                      index={i}
-                    >
+                    <Draggable key={i} draggableId={String(item._id)} index={i}>
                       {(provided) => (
                         <article
                           {...provided.draggableProps}

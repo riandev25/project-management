@@ -12,6 +12,7 @@ export const removeLocalStorage = (key: string) => {
 };
 
 export const getArrayLocalStorage = (key: string): Array<string> => {
-  const item = String(localStorage.getItem(key));
-  return JSON.parse(item);
+  const item = localStorage.getItem(key);
+  // const stringifiedIdBoard = Array(item);
+  return JSON.parse(item || '');
 };

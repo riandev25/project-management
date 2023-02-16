@@ -249,7 +249,6 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
       const newItems = filteredCheckItem.filter((el) => {
         return !arrayIdsOrder.includes(el._id);
       });
-      console.log(newItems);
 
       if (newItems?.length) myArray = [...newItems, ...myArray];
     }
@@ -397,11 +396,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
               >
                 {checkitemData.map((item, i) => {
                   return (
-                    <Draggable
-                      key={item._id}
-                      draggableId={String(item._id)}
-                      index={i}
-                    >
+                    <Draggable key={i} draggableId={String(item._id)} index={i}>
                       {(provided) => (
                         <article
                           {...provided.draggableProps}

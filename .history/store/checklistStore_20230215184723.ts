@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import produce from 'immer';
-import { ICheckitemObject } from '../interfaces/checklist';
 
 export interface IChecklistStateObject {
   _id: string;
@@ -87,21 +86,3 @@ export const checkitemStore = create<ICheckitemState>()((set, get) => ({
   //   );
   // },
 }));
-
-interface ICheckitemDragDropStore {
-  checkitem: ICheckitemObject[];
-  updateDragDrop: (checkitem: ICheckitemObject[]) => void;
-}
-
-export const checkitemDragDropStore = create<ICheckitemDragDropStore>()(
-  (set) => ({
-    checkitem: [],
-    updateDragDrop: (checkitem) => {
-      set(
-        produce((state) => {
-          state.checkitem = checkitem;
-        })
-      );
-    },
-  })
-);

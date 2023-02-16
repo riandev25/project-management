@@ -89,7 +89,7 @@ export const checkitemStore = create<ICheckitemState>()((set, get) => ({
 }));
 
 interface ICheckitemDragDropStore {
-  checkitem: ICheckitemObject[];
+  checkitem?: ICheckitemObject[];
   updateDragDrop: (checkitem: ICheckitemObject[]) => void;
 }
 

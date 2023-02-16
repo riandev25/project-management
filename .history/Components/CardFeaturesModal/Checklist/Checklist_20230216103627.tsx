@@ -228,34 +228,8 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     return checkitem.filter((checkitem) => checkitem.idChecklist === _id);
   }, [checkitem, _id]);
 
-  const [checkitemData, setCheckitemData] = useState<Array<ICheckitemObject>>(
-    filteredCheckItem || []
-  );
-
-  useEffect(() => {
-    const arrayIdsOrder = getLocalStorage('taskOrder');
-
-    if (!arrayIdsOrder && filteredCheckItem?.length) {
-      const idsOrderArray = filteredCheckItem.map((task) => task._id);
-      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-    }
-
-    let myArray;
-    if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-      myArray = arrayIdsOrder.map((pos: any) => {
-        return filteredCheckItem.find((el) => el._id === pos);
-      });
-
-      const newItems = filteredCheckItem.filter((el) => {
-        return !arrayIdsOrder.includes(el._id);
-      });
-      console.log(newItems);
-
-      if (newItems?.length) myArray = [...newItems, ...myArray];
-    }
-
-    setCheckitemData(myArray || filteredCheckItem);
-  }, [filteredCheckItem]);
+  const [checkitemData, setCheckitemData] =
+    useState<Array<ICheckitemObject>>(filteredCheckItem);
 
   // Checklist data fetching
   const { mutateAsync: updateMutate } = useUpdateCheckitem();
@@ -285,6 +259,12 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const id = String(event.currentTarget.dataset.id);
+    const arrayIdsOrder = getLocalStorage('taskOrder');
+
+    if (arrayIdsOrder?.length) {
+      const newIdsOrderArray = arrayIdsOrder.filter((num: any) => num !== id);
+      setLocalStorage('taskOrder', newIdsOrderArray);
+    }
     deleteItemMutate(id);
     deleteListMutate(id);
   };
@@ -303,10 +283,14 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
       localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
 
       setCheckitemData(tasks);
+      // updateTodos(tasks);
     }
   };
 
   // Update order
+  // useEffect(() => {
+  //   updateDragDrop(filteredCheckItem);
+  // }, []);
 
   // useEffect(() => {
   //   const arrayIdsOrder = getLocalStorage('taskOrder');
@@ -333,6 +317,23 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   //   setCheckitemData(myArray || checkitemData);
   // }, [checkitemData, filteredCheckItem]);
 
+  useEffect(() => {
+    const arrayIdsOrder = getLocalStorage('taskOrder');
+
+    if (!arrayIdsOrder && checkitemData?.length) {
+      const idsOrderArray = checkitemData.map((task) => task._id);
+      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
+    }
+
+    let myArray;
+    if (arrayIdsOrder?.length && checkitemData?.length) {
+      myArray = arrayIdsOrder.map((pos: any) => {
+        return checkitemData[pos];
+      });
+      setCheckitemData(myArray);
+    }
+  }, [checkitemData, filteredCheckItem]); // Depend on the memoized filteredCheckItem value
+
   // useEffect(() => {
   //   const arrayIdsOrder = getArrayLocalStorage('taskOrder');
 
@@ -357,15 +358,13 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   // }, [filteredCheckItem, updateDragDrop]);
 
   // Update percentage completion of checklist
-  useEffect(() => {
-    const filteredCheckItem = checkitem.filter(
-      (checkitem) => checkitem.idChecklist === _id
-    );
-    const percent = getChecklistPercentage(filteredCheckItem);
-    setPercentages(percent);
-  }, [_id, checkitem]);
-
-  console.log(checkitemData);
+  // useEffect(() => {
+  //   const filteredCheckItem = checkitem.filter(
+  //     (checkitem) => checkitem.idChecklist === _id
+  //   );
+  //   const percent = getChecklistPercentage(filteredCheckItem);
+  //   setPercentages(percent);
+  // }, [_id, checkitem]);
 
   return (
     <div className='flex flex-col gap-4'>

@@ -164,14 +164,11 @@ import {
   IChecklistArrays,
 } from '../../../interfaces/checklist';
 import AddItemCheckList from './AddItemCheckList';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ChecklistContext } from '../../../lib/context/ChecklistContext/ChecklistContext';
 import { NoIconBtn } from '../../../UI/Buttons/Buttons';
 import ChecklistOptions from './ChecklistOptions';
-import {
-  checkitemDragDropStore,
-  checklistStore,
-} from '../../../store/checklistStore';
+import { checklistStore } from '../../../store/checklistStore';
 import { getChecklistPercentage } from '../../../lib/utils/checklistPercentage';
 import { shallow } from 'zustand/shallow';
 import { filterChecklist } from '../../../lib/utils/filterChecklist';
@@ -188,7 +185,6 @@ import { useDeleteChecklist } from '../../../lib/hooks/checklist/useDeleteCheckl
 import { checklistIdStore } from '../../../store/cardStore';
 import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '../../../lib/helper/dragAndDrop/StrictModeDroppable';
-import React from 'react';
 
 const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   const [percentages, setPercentages] = useState<string>('');
@@ -208,54 +204,16 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     idChecklist: state.idChecklist,
   }));
 
-  // Checklist drag and drop global store
-  const { checkitemDragDrop, updateDragDrop } = checkitemDragDropStore(
-    (state) => ({
-      checkitemDragDrop: state.checkitem,
-      updateDragDrop: state.updateDragDrop,
-    }),
-    shallow
-  );
-
   // Get boolean value when adding check item or not
   const isAddCheckitem = filterChecklist(checklistState, _id, 'addCheckitem');
 
   // // Get checklist items of a single checklist
-  // const filteredCheckItem = checkitem.filter(
-  //   (checkitem) => checkitem.idChecklist === _id
-  // );
-  const filteredCheckItem = useMemo(() => {
-    return checkitem.filter((checkitem) => checkitem.idChecklist === _id);
-  }, [checkitem, _id]);
-
-  const [checkitemData, setCheckitemData] = useState<Array<ICheckitemObject>>(
-    filteredCheckItem || []
+  const filteredCheckItem = checkitem.filter(
+    (checkitem) => checkitem.idChecklist === _id
   );
 
-  useEffect(() => {
-    const arrayIdsOrder = getLocalStorage('taskOrder');
-
-    if (!arrayIdsOrder && filteredCheckItem?.length) {
-      const idsOrderArray = filteredCheckItem.map((task) => task._id);
-      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-    }
-
-    let myArray;
-    if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-      myArray = arrayIdsOrder.map((pos: any) => {
-        return filteredCheckItem.find((el) => el._id === pos);
-      });
-
-      const newItems = filteredCheckItem.filter((el) => {
-        return !arrayIdsOrder.includes(el._id);
-      });
-      console.log(newItems);
-
-      if (newItems?.length) myArray = [...newItems, ...myArray];
-    }
-
-    setCheckitemData(myArray || filteredCheckItem);
-  }, [filteredCheckItem]);
+  const [todos, updateTodos] =
+    useState<Array<ICheckitemObject>>(filteredCheckItem);
 
   // Checklist data fetching
   const { mutateAsync: updateMutate } = useUpdateCheckitem();
@@ -285,6 +243,12 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const id = String(event.currentTarget.dataset.id);
+    const arrayIdsOrder = getLocalStorage('taskOrder');
+
+    if (arrayIdsOrder?.length) {
+      const newIdsOrderArray = arrayIdsOrder.filter((num: any) => num !== id);
+      setLocalStorage('taskOrder', newIdsOrderArray);
+    }
     deleteItemMutate(id);
     deleteListMutate(id);
   };
@@ -292,8 +256,8 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
   const handleOnDragEnd = (result: DropResult) => {
     if (!result?.destination) return;
 
-    if (checkitemData !== undefined) {
-      const tasks = [...checkitemData];
+    if (todos !== undefined) {
+      const tasks = [...todos];
 
       const [reorderedItem] = tasks.splice(result.source.index, 1);
 
@@ -302,70 +266,42 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
       const idsOrderArray = tasks.map((task) => task._id);
       localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
 
-      setCheckitemData(tasks);
+      updateTodos(tasks);
     }
   };
 
   // Update order
+  useEffect(() => {
+    const arrayIdsOrder = getArrayLocalStorage('taskOrder');
 
-  // useEffect(() => {
-  //   const arrayIdsOrder = getLocalStorage('taskOrder');
+    if (!arrayIdsOrder && todos?.length) {
+      const idsOrderArray = todos.map((task) => task._id);
+      localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
+    }
 
-  //   if (!arrayIdsOrder && checkitemData?.length) {
-  //     const idsOrderArray = checkitemData.map((task) => task._id);
-  //     localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-  //   }
+    let myArray: any;
+    if (arrayIdsOrder?.length && todos?.length) {
+      myArray = arrayIdsOrder.map((pos) => {
+        return todos.find((el) => el._id === pos);
+      });
 
-  //   let myArray;
-  //   if (arrayIdsOrder?.length && checkitemData?.length) {
-  //     myArray = arrayIdsOrder.map((pos: any) => {
-  //       return checkitemData.find((el) => el._id === pos);
-  //     });
+      const newItems = todos.filter((el) => {
+        if (el._id !== undefined) return !arrayIdsOrder.includes(el._id);
+      });
 
-  //     const newItems = checkitemData.filter((el) => {
-  //       return !arrayIdsOrder.includes(el._id);
-  //     });
-
-  //     if (newItems?.length) myArray = [...newItems, ...myArray];
-  //   }
-  //   console.log(myArray);
-
-  //   setCheckitemData(myArray || checkitemData);
-  // }, [checkitemData, filteredCheckItem]);
-
-  // useEffect(() => {
-  //   const arrayIdsOrder = getArrayLocalStorage('taskOrder');
-
-  //   if (!arrayIdsOrder && filteredCheckItem?.length) {
-  //     const idsOrderArray = filteredCheckItem.map((task) => task._id);
-  //     localStorage.setItem('taskOrder', JSON.stringify(idsOrderArray));
-  //   }
-
-  //   let myArray: any;
-  //   if (arrayIdsOrder?.length && filteredCheckItem?.length) {
-  //     myArray = arrayIdsOrder.map((pos) => {
-  //       return filteredCheckItem.find((el) => el._id === pos);
-  //     });
-
-  //     const newItems = filteredCheckItem.filter((el) => {
-  //       if (el._id !== undefined) return !arrayIdsOrder.includes(el._id);
-  //     });
-
-  //     if (newItems?.length) myArray = [...newItems, ...myArray];
-  //   }
-  //   updateDragDrop(myArray || filteredCheckItem);
-  // }, [filteredCheckItem, updateDragDrop]);
+      if (newItems?.length) myArray = [...newItems, ...myArray];
+    }
+    updateTodos(myArray || todos);
+  }, [todos]);
 
   // Update percentage completion of checklist
-  useEffect(() => {
-    const filteredCheckItem = checkitem.filter(
-      (checkitem) => checkitem.idChecklist === _id
-    );
-    const percent = getChecklistPercentage(filteredCheckItem);
-    setPercentages(percent);
-  }, [_id, checkitem]);
-
-  console.log(checkitemData);
+  // useEffect(() => {
+  //   const filteredCheckItem = checkitem.filter(
+  //     (checkitem) => checkitem.idChecklist === _id
+  //   );
+  //   const percent = getChecklistPercentage(filteredCheckItem);
+  //   setPercentages(percent);
+  // }, [_id, checkitem]);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -395,7 +331,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {checkitemData.map((item, i) => {
+                {todos.map((item, i) => {
                   return (
                     <Draggable
                       key={item._id}
@@ -434,7 +370,7 @@ const Checklist = ({ _id, name, checkitem }: IChecklistArrays) => {
           </Droppable>
         </DragDropContext>
         <section className='flex flex-col'>
-          {checkitemData.length < 1 ? (
+          {todos.length > 0 ? (
             <div className='text-center'>
               <p className='text-sm'>
                 Checklist not found. Add checklist item using the button below.
