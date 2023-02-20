@@ -1,0 +1,102 @@
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faEllipsis, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { shallow } from 'zustand/shallow';
+import { filterCheckitem } from '../../../lib/utils/filterCheckitem';
+import { checkitemStore } from '../../../store/checklistStore';
+import ChecklistDueDate from './ChecklistDueDate';
+import ChecklistItemActions from './ChecklistItemActions';
+
+interface IChecklistOption {
+  id?: string;
+}
+
+const ChecklistOptions = ({ id }: IChecklistOption) => {
+  const { checkitemState, toggleOptionState, toggleDateOptionState } =
+    checkitemStore(
+      (state) => ({
+        checkitemState: state.checkitemState,
+        toggleOptionState: state.toggleOptionState,
+        toggleDateOptionState: state.toggleDateOptionState,
+      }),
+      shallow
+    );
+
+  // const isOptionOpen = filterCheckitem(
+  //   checkitemState,
+  //   String(id),
+  //   'option-btn'
+  // );
+
+  // const isDateOptionOpen = filterCheckitem(
+  //   checkitemState,
+  //   String(id),
+  //   'date-time-btn'
+  // );
+
+  const { isOptionOpen, isDateOptionOpen } = filterCheckitem(
+    checkitemState,
+    String(id)
+  );
+
+  const toggleOptionsHandler = () => {
+    const _id = String(id);
+    toggleOptionState(_id, 'option-btn');
+  };
+
+  const toggleDateHandler = () => {
+    const _id = String(id);
+    toggleDateOptionState(_id, 'date-time-btn');
+  };
+
+  const BUTTONS = [
+    {
+      id: 'data-time-btn',
+      icon: faClock,
+      action: toggleOptionsHandler,
+    },
+    // {
+    //   id: 'user-btn',
+    //   icon: faUserPlus,
+    // },
+    {
+      id: 'option-btn',
+      icon: faEllipsis,
+      action: toggleDateHandler,
+    },
+  ];
+
+  return (
+    <div
+      className={`${
+        isOptionOpen ? 'flex' : 'hidden'
+      } group-hover:flex absolute top-1.5 right-0`}
+    >
+      <div className='relative flex flex-row gap-1 pl-12 justify-end'>
+        {BUTTONS.map(({ id, icon, action }, i) => {
+          return (
+            <button
+              key={i}
+              type='button'
+              data-id={id}
+              className={`px-1.5 rounded-sm ${
+                id !== 'option-btn' ? 'bg-gray-300' : null
+              } text-gray-500 hover:bg-gray-400 hover:text-gray-600`}
+              onClick={action}
+            >
+              <FontAwesomeIcon icon={icon} size='xs' />
+            </button>
+          );
+        })}
+        {/* <div className='absolute z-20 right-0'> */}
+        {isOptionOpen ? (
+          <ChecklistItemActions id={id} exitBtnHandler={toggleOptionsHandler} />
+        ) : isDateOptionOpen ? (
+          <ChecklistDueDate id={id} exitBtnHandler={toggleDateHandler} />
+        ) : null}
+        {/* </div> */}
+      </div>
+    </div>
+  );
+};
+export default ChecklistOptions;
