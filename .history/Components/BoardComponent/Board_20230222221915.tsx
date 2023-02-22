@@ -57,7 +57,7 @@ const BoardComponent = () => {
   useEffect(() => {
     if (boardList && idBoard && isGetBoardSuccess) {
       const idBoardExist = boardList.filter(
-        (board: IBoardData) => board._id === idBoard
+        (board: any) => board._id === idBoard
       );
       if (!idBoardExist) {
         router.push('/404');
