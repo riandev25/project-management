@@ -99,7 +99,7 @@ const BoardComponent = () => {
 
   const handleDragEnd = (result: DropResult) => {};
 
-  if (isLoading || !renderPage) {
+  if (isLoading || validUrl || !renderPage) {
     return <p></p>;
   }
 

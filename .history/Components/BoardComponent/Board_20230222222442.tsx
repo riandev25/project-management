@@ -18,30 +18,12 @@ const BoardComponent = () => {
 
   const { idBoard, boardName } = router.query;
 
-  const {
-    data: boardList,
-    isSuccess: isGetBoardSuccess,
-    isLoading: isGetBoardLoading,
-  } = useGetBoard();
+  const { data: boardList, isSuccess: isGetBoardSuccess } = useGetBoard();
 
   if (idBoard !== undefined && boardName !== undefined) {
     setLocalStorage('idBoard', String(idBoard));
     setLocalStorage('boardName', String(boardName));
   }
-
-  useEffect(() => {
-    if (boardList && idBoard && isGetBoardSuccess) {
-      console.log(boardList);
-      const idBoardExist = boardList.find(
-        (board: any) => board._id === idBoard
-      );
-      if (!idBoardExist) {
-        router.push('/404');
-      } else {
-        setRenderPage(true);
-      }
-    }
-  }, [boardList, idBoard, isGetBoardSuccess, router]);
 
   // Get all board list
   const { data: listData, isSuccess, isError, isLoading } = useGetLists();
@@ -73,6 +55,20 @@ const BoardComponent = () => {
   // Drag and drop event handler
 
   useEffect(() => {
+    if (boardList && idBoard && isGetBoardSuccess) {
+      const idBoardExist = boardList.find(
+        (board: any) => board._id === idBoard
+      );
+      if (!idBoardExist) {
+        router.push('/404');
+        setValidUrl(true);
+      } else {
+        setRenderPage(true);
+      }
+    }
+  }, [boardList, idBoard, isGetBoardSuccess, router, validUrl]);
+
+  useEffect(() => {
     if (isSuccess) {
       const filteredList: any = listData.flatMap((item: any) => {
         return item.cards.map((card: any) => {
@@ -99,7 +95,7 @@ const BoardComponent = () => {
 
   const handleDragEnd = (result: DropResult) => {};
 
-  if (isLoading || !renderPage) {
+  if (isLoading || validUrl || !renderPage) {
     return <p></p>;
   }
 

@@ -37,11 +37,12 @@ const BoardComponent = () => {
       );
       if (!idBoardExist) {
         router.push('/404');
+        setValidUrl(true);
       } else {
         setRenderPage(true);
       }
     }
-  }, [boardList, idBoard, isGetBoardSuccess, router]);
+  }, [boardList, idBoard, isGetBoardSuccess, router, validUrl]);
 
   // Get all board list
   const { data: listData, isSuccess, isError, isLoading } = useGetLists();
@@ -99,7 +100,7 @@ const BoardComponent = () => {
 
   const handleDragEnd = (result: DropResult) => {};
 
-  if (isLoading || !renderPage) {
+  if (isLoading || validUrl || !renderPage) {
     return <p></p>;
   }
 
