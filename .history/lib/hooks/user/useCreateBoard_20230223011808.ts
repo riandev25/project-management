@@ -4,11 +4,11 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { shallow } from 'zustand/shallow';
 import { capitalizeFirstLetter } from '../../utils/captitalizeString';
 import { createBoardchema } from '../../utils/createBoardSchema';
-import { boardStore } from '../../../store/userStore';
+import { userStore } from '../../../store/userStore';
 import userService from '../../../services/userService';
 
 export const useCreateBoard = () => {
-  const { toggleModal, isModalOpen } = boardStore(
+  const { toggleModal, isModalOpen } = userStore(
     (state) => ({
       isModalOpen: state.isModalOpen,
       toggleModal: state.toggleModal,
@@ -27,9 +27,9 @@ export const useCreateBoard = () => {
 
   const queryClient = useQueryClient();
 
-  const { data, mutateAsync } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: userService().createBoard,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(['boards-list']);
     },
   });
