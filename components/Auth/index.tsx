@@ -1,15 +1,19 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthRegisterForm from './AuthRegisterForm';
 import AuthLoginForm from './AuthLoginForm';
 import ErrorAlert from '../../UI/Modal/ErrorAlert';
 import { useAuthRegisterStore, useAuthLoginStore } from '../../store/authStore';
 import { shallow } from 'zustand/shallow';
 import Link from 'next/link';
+import { getLocalStorage } from '../../lib/utils/localStorage';
+import { useAuthLogin } from '../../lib/hooks/auth/useAuthLogin';
 
 const AuthMainComponent = () => {
   const router = useRouter();
   const path = router.asPath;
+
+  const [nextPage, setNextPage] = useState(false);
 
   const { registerErr, registerErrStatus, updateRegisterErrStatus } =
     useAuthRegisterStore(
@@ -29,6 +33,15 @@ const AuthMainComponent = () => {
     }),
     shallow
   );
+
+  const { isLoginSuccess } = useAuthLogin();
+
+  if (isLoginSuccess)
+    return (
+      <div className='relative flex items-center min-h-screen w-screen justify-center items-center'>
+        <p className='text-lg'>Logging in. Please wait ...</p>
+      </div>
+    );
 
   return (
     <div className='relative flex items-center min-h-screen p-4 bg-gray-300 lg:justify-center'>
