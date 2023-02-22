@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import * as yup from 'yup';
 
 const EditAttachment = () => {
