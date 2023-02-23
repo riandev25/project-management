@@ -63,7 +63,7 @@ const CreateBoardModal = () => {
       />
       <section className='flex flex-col gap-3'>
         <div>
-          <label className='text-xs text-gray-600'>Title</label>
+          <label className='text-xs font-normal text-gray-600'>Title</label>
           <input
             type='text'
             data-id='add-title'

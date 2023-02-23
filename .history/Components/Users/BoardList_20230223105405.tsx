@@ -74,7 +74,6 @@ const BoardList = ({ serverData, cookie }: any) => {
           </button>
         </li>
       </ul>
-
       {isModalOpen ? <CreateBoardModal /> : null}
     </div>
   );

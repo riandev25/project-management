@@ -7,11 +7,10 @@ import { capitalizeFirstLetter } from '../../lib/utils/captitalizeString';
 import { userStore } from '../../store/userStore';
 import { createBoardchema } from '../../lib/utils/createBoardSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRef } from 'react';
-import { useOnClickOutside } from '../../lib/utils/useOnClickOutside';
 
 const CreateBoardModal = () => {
   // Create board hook
+
   const { mutateAsync } = useCreateBoard();
 
   const {
@@ -32,13 +31,6 @@ const CreateBoardModal = () => {
     shallow
   );
 
-  // Handle click events outside the component
-  const ref = useRef<HTMLFormElement>(null);
-
-  useOnClickOutside(ref, () => {
-    toggleModal();
-  });
-
   const onSubmitHandler = async (data: FieldValues, event: any) => {
     event.preventDefault();
     const response = await mutateAsync({
@@ -51,7 +43,6 @@ const CreateBoardModal = () => {
 
   return (
     <form
-      ref={ref}
       className='z-30 absolute top-1/2 sm:top-60 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-72 shadow-md rounded-sm bg-white px-3 py-2 gap-3'
       onSubmit={handleSubmit(onSubmitHandler)}
     >
@@ -63,7 +54,7 @@ const CreateBoardModal = () => {
       />
       <section className='flex flex-col gap-3'>
         <div>
-          <label className='text-xs text-gray-600'>Title</label>
+          <label className='text-xs font-normal text-gray-600'>Title</label>
           <input
             type='text'
             data-id='add-title'
