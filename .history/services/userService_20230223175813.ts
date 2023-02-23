@@ -19,7 +19,6 @@ const userService = () => {
   const createBoard = async (boardName: string) => {
     try {
       const response = await apiClient.post('', boardName);
-      return response;
     } catch (err) {
       return err;
     }
