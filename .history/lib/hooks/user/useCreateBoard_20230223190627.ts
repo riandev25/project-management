@@ -4,9 +4,8 @@ import { userService } from '../../../services/userService';
 
 export const useCreateBoard = () => {
   const queryClient = useQueryClient();
-  const { createBoard } = userService();
   const { isSuccess, isError, mutateAsync, isLoading } = useMutation({
-    mutationFn: createBoard,
+    mutationFn: userService().createBoard,
     onMutate: async ({ boardName }) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: ['boards-list'] });
