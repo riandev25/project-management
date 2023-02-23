@@ -19,7 +19,6 @@ const userService = () => {
   const createBoard = async ({ boardName }: ICreateBoard) => {
     try {
       const response = await apiClient.post('', { boardName });
-      return response.data;
     } catch (err) {
       return err;
     }

@@ -7,15 +7,12 @@ import { capitalizeFirstLetter } from '../../lib/utils/captitalizeString';
 import { userStore } from '../../store/userStore';
 import { createBoardchema } from '../../lib/utils/createBoardSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormEvent, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useOnClickOutside } from '../../lib/utils/useOnClickOutside';
 
 const CreateBoardModal = () => {
   // Create board hook
   const { mutateAsync } = useCreateBoard();
-
-  // Local state
-  const [boardName, setBoardName] = useState('');
 
   const {
     register,
@@ -42,30 +39,21 @@ const CreateBoardModal = () => {
     toggleModal();
   });
 
-  const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (data: FieldValues, event: any) => {
     event.preventDefault();
-    const newBoardName = capitalizeFirstLetter(boardName);
-    const response = await mutateAsync({ boardName: newBoardName });
-    console.log(response);
+    const boardName = capitalizeFirstLetter(data.boardName);
+    await mutateAsync({
+      boardName,
+    });
     reset();
     toggleModal();
   };
-
-  // const onSubmitHandler = async (data: FieldValues, event: any) => {
-  //   event.preventDefault();
-  //   const boardName = capitalizeFirstLetter(data.boardName);
-  //   await mutateAsync({
-  //     boardName,
-  //   });
-  //   reset();
-  //   toggleModal();
-  // };
 
   return (
     <form
       ref={ref}
       className='z-30 absolute top-1/2 sm:top-60 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-72 shadow-md rounded-sm bg-white px-3 py-2 gap-3'
-      onSubmit={onSubmitHandler}
+      onSubmit={handleSubmit(onSubmitHandler)}
     >
       <HeaderModal
         title='Create board'
@@ -78,11 +66,10 @@ const CreateBoardModal = () => {
           <label className='text-xs text-gray-600'>Title</label>
           <input
             type='text'
-            value={boardName}
             data-id='add-title'
             className='w-full border-2 border-solid border-gray-200 px-2 py-1 text-sm'
             placeholder='Title'
-            onChange={(e) => setBoardName(e.target.value)}
+            {...register('boardName')}
           />
         </div>
       </section>

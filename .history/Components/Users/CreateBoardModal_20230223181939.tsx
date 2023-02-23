@@ -44,8 +44,8 @@ const CreateBoardModal = () => {
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newBoardName = capitalizeFirstLetter(boardName);
-    const response = await mutateAsync({ boardName: newBoardName });
+    const boardName = capitalizeFirstLetter(event.currentTarget.value);
+    const response = await mutateAsync({ boardName });
     console.log(response);
     reset();
     toggleModal();
