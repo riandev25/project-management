@@ -69,7 +69,7 @@ const CreateBoardModal = () => {
   return (
     <form
       // ref={ref}
-      className='z-30 fixed top-1/2 sm:top-60 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-72 shadow-md rounded-sm bg-white px-3 py-2 gap-3'
+      className='z-30 sticky top-1/2 sm:top-60 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-72 shadow-md rounded-sm bg-white px-3 py-2 gap-3'
       onSubmit={onSubmitHandler}
     >
       <HeaderModal

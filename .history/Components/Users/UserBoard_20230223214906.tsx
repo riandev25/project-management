@@ -29,10 +29,7 @@ const UserBoard = () => {
         Logout
       </button>
       {isModalOpen ? (
-        <div
-          onClick={toggleModal}
-          className='z-20 absolute top-0 left-0 w-screen min-h-screen h-full bg-black opacity-70'
-        ></div>
+        <div className='z-20 absolute sticky top-0 left-0 w-screen min-h-screen h-full bg-black opacity-70'></div>
       ) : null}
     </div>
   );
