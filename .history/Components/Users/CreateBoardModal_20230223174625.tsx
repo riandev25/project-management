@@ -42,7 +42,7 @@ const CreateBoardModal = () => {
   const onSubmitHandler = async (data: FieldValues, event: any) => {
     event.preventDefault();
     const boardName = capitalizeFirstLetter(data.boardName);
-    await mutateAsync({
+    const response = await mutateAsync({
       boardName,
     });
     reset();
