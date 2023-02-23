@@ -12,7 +12,7 @@ import { useOnClickOutside } from '../../lib/utils/useOnClickOutside';
 
 const CreateBoardModal = () => {
   // Create board hook
-  const { mutate } = useCreateBoard();
+  const { mutateAsync } = useCreateBoard();
 
   const {
     register,
@@ -42,7 +42,7 @@ const CreateBoardModal = () => {
   const onSubmitHandler = async (data: FieldValues, event: any) => {
     event.preventDefault();
     const boardName = capitalizeFirstLetter(data.boardName);
-    const response = await mutate({
+    const response = await mutateAsync({
       boardName,
     });
     reset();
