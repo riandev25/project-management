@@ -8,7 +8,7 @@ interface IAddChecklistState {
 
 export const addChecklistState = (
   checklistData: IChecklistArrays[]
-): IAddChecklistState[] => {
+): IAddChecklistState => {
   return checklistData.map(({ _id }) => ({
     ...{ _id },
     isAddCheckitem: false,
