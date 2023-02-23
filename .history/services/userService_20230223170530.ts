@@ -1,8 +1,6 @@
+import { ICreateBoard } from '../interfaces/user.interface';
 import { endpoints } from './endpoints';
-
-interface ICreateBoard {
-  boardName: string;
-}
+import { IBoard } from '../interfaces/board';
 
 const userService = () => {
   const apiClient = endpoints('boards');
