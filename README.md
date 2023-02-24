@@ -1,17 +1,32 @@
 # Task Accio
 
-Task Accio is a full-stack web application for task management. It allows users to create tasks, add labels, checklists, and images, and manage their tasks in a user-friendly way. The application provides login authentication and CRUD (Create, Read, Update, Delete) operations for tasks.
+Task Accio is a full-stack web application that allows users to manage their tasks in a user-friendly way. Inspired by Trello, it provides features such as creating tasks, adding labels, checklists, and images, as well as login authentication and CRUD (Create, Read, Update, Delete) operations for tasks. With Task Accio, users can easily keep track of their tasks, prioritize them using drag-and-drop, and break them down into smaller, more manageable sub-tasks using checklists.
 
 ## Main Technologies Used
 
-- **ReactJS**: JavaScript library for building user interfaces.
-- **NextJS**: Framework for server-rendered React applications.
+### Language
 - **TypeScript**: Superset of JavaScript that adds static type definitions.
-- **TailwindCSS**: Utility-first CSS framework for rapidly building custom designs.
+
+### User interface and Design
+- **React JS**: JavaScript library for building user interfaces.
+- **Tailwind CSS**: Utility-first CSS framework for rapidly building custom designs.
+
+### Frameworks
+- **Next JS**: Framework for server-rendered React applications.
+
+### State Management
 - **Zustand**: Small, fast and scalable state management library for React applications.
+
+### Data Management
 - **React Query**: Library for managing and caching asynchronous data in React applications.
+
+### Form Management
 - **React Hook Form**: Library for managing forms in React applications.
+
+### Rich Text Editing
 - **Tiptap React**: Rich text editor built on Prosemirror and Vue.js, but made available for React.
+
+### Drag and Drop
 - **React Beautiful DnD**: Beautiful and accessible drag and drop for lists with React.
 
 ## Main Features
