@@ -10,7 +10,7 @@ import {
   loginUser,
   registerUser,
   // useLoginUser,
-} from '../../../services/AuthService';
+} from '../../../services/authService';
 import {
   useAuthLoginStore,
   useAuthRegisterStore,

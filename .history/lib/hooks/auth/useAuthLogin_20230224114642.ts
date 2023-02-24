@@ -10,7 +10,7 @@ import {
   loginUser,
   registerUser,
   // useLoginUser,
-} from '../../../services/AuthService';
+} from '../../../services/authService';
 import {
   useAuthLoginStore,
   useAuthRegisterStore,
@@ -68,7 +68,11 @@ export const useAuthLogin = () => {
 
   // Login User
 
-  const { mutateAsync, isLoading: loginLoading } = useMutation({
+  const {
+    mutateAsync,
+    isLoading: loginLoading,
+    isSuccess: isLoginSuccess,
+  } = useMutation({
     mutationKey: ['loginuser'],
     mutationFn: loginUser,
   });
@@ -88,11 +92,11 @@ export const useAuthLogin = () => {
         } else {
           localStorage.setItem(
             'email',
-            JSON.stringify(responseData.user.email)
+            JSON.stringify(formatEmail(responseData?.user?.email))
           );
           localStorage.setItem(
             'apiKey',
-            JSON.stringify(responseData.user.apiKey)
+            JSON.stringify(responseData?.user?.apiKey)
           );
           updateEmail(responseData.user.email);
           updateApiKey(responseData.user.apiKey);
@@ -109,9 +113,7 @@ export const useAuthLogin = () => {
 
   useEffect(() => {
     if (redirect) {
-      const stringifiedEmail = formatEmail(
-        String(localStorage.getItem('email'))
-      );
+      const stringifiedEmail = String(localStorage.getItem('email'));
       const storedEmail = JSON.parse(stringifiedEmail);
       router.push(`/u/${storedEmail}/boards`);
       // router.push(`/u/${formattedEmail}/boards`);
@@ -127,5 +129,6 @@ export const useAuthLogin = () => {
     passwordErrorLogin,
     loginLoading,
     loginResult,
+    isLoginSuccess,
   };
 };

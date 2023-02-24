@@ -8,7 +8,7 @@ import { useAuthRegister } from '../../lib/hooks/auth/useAuthRegister';
 import { authSchema } from '../../lib/utils/authSchema';
 import { capitalizeFirstLetter } from '../../lib/utils/captitalizeString';
 import { formatResponse } from '../../lib/utils/formatResponse';
-import { registerUser } from '../../services/UserService';
+import { registerUser } from '../../services/authService';
 import { AuthSubmitBtn } from './AuthSubmitBtn';
 import InputComponent from './InputElement';
 
