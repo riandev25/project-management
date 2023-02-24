@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 export const endpoints = (path: string, file?: boolean) => {
   // if (typeof window !== 'undefined') {
-  const { NODE_ENV } = process.env;
+  const node_env = process.env.NODE_ENV;
 
   let apiKey: string = '';
 
@@ -12,10 +12,10 @@ export const endpoints = (path: string, file?: boolean) => {
   }
 
   const apiClient: AxiosInstance = axios.create({
-    baseURL: `https://taskaccio.onrender.com/api/${path}`,
-    // NODE_ENV === 'production'
-    //   ? `https://taskaccio.onrender.com/api/${path}`
-    //   : `http://localhost:3001/api/${path}`,
+    baseURL:
+      node_env === 'production'
+        ? `https://taskaccio.onrender.com/api/${path}`
+        : `http://localhost:3001/api/${path}`,
     headers: {
       'Content-type': file ? 'multipart/form-data' : 'application/json',
       'x-api-key': apiKey,
