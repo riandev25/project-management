@@ -60,9 +60,9 @@ To run this project, you will need to add the following environment variables to
 
 To use Task Accio, follow these steps:
 
-1.Register for a new account or log in with an existing account.
+1.  Register for a new account or log in with an existing account.
 
-2.After creating a new board in Task Accio, the user is redirected to the home page where they can create a board. Existing boards can also be selected from the home page to view tasks.
+2.  After creating a new board in Task Accio, the user is redirected to the home page where they can create a board. Existing boards can also be selected from the home page to view tasks.
 
 ## Where To Access The App
 
