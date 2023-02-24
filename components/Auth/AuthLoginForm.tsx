@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useAuthLogin } from '../../lib/hooks/auth/useAuthLogin';
 import { AuthSubmitBtn } from './AuthSubmitBtn';
 import InputComponent from './InputElement';
