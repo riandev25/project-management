@@ -5,7 +5,7 @@ import { userService } from '../../../services/userService';
 export const useCreateBoard = () => {
   const queryClient = useQueryClient();
   const { createBoard } = userService();
-  const { isSuccess, isError, mutate, isLoading } = useMutation({
+  const { isSuccess, isError, mutateAsync, isLoading } = useMutation({
     mutationKey: ['boards-list'],
     mutationFn: createBoard,
     onMutate: async ({ boardName }) => {
@@ -13,15 +13,13 @@ export const useCreateBoard = () => {
       await queryClient.cancelQueries({ queryKey: ['boards-list'] });
 
       // Snapshot the previous value
-      const previousBoardsList = queryClient.getQueryData([
-        'boards-list',
-      ]) as IBoard[];
+      const previousBoardsList = queryClient.getQueryData(['boards-list']);
 
       // Optimistically update to the new value
       queryClient.setQueryData(['boards-list'], (old: any) => [
         ...old,
         { boardName },
-      ]) as IBoard[];
+      ]);
       return { previousBoardsList };
     },
     // If the mutation fails, use the context we returned above
@@ -32,5 +30,5 @@ export const useCreateBoard = () => {
       queryClient.invalidateQueries(['boards-list']);
     },
   });
-  return { isSuccess, isError, mutate, isLoading };
+  return { isSuccess, isError, mutateAsync, isLoading };
 };

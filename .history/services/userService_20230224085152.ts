@@ -1,7 +1,7 @@
 import { IBoard } from '../interfaces/board';
 import { endpoints } from './endpoints';
 
-export interface ICreateBoard {
+export interface ICreateNewBoard {
   boardName: string;
 }
 
@@ -17,10 +17,10 @@ export const userService = () => {
     }
   };
 
-  const createBoard = async ({ boardName }: ICreateBoard) => {
+  const createBoard = async ({ boardName }: ICreateNewBoard) => {
     try {
       const response = await apiClient.post('', { boardName });
-      console.log(response.data);
+      return response.data;
     } catch (err) {
       console.error(err);
     }
