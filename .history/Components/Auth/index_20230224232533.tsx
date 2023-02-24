@@ -1,26 +1,31 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthRegisterForm from './AuthRegisterForm';
 import AuthLoginForm from './AuthLoginForm';
 import ErrorAlert from '../../UI/Modal/ErrorAlert';
-import { authLoginStore, authStore } from '../../store/authStore';
+import { useAuthRegisterStore, useAuthLoginStore } from '../../store/authStore';
 import { shallow } from 'zustand/shallow';
 import Link from 'next/link';
+import { getLocalStorage } from '../../lib/utils/localStorage';
+import { useAuthLogin } from '../../lib/hooks/auth/useAuthLogin';
 
 const AuthMainComponent = () => {
   const router = useRouter();
   const path = router.asPath;
 
-  const { registerErr, registerErrStatus, updateRegisterErrStatus } = authStore(
-    (state) => ({
-      registerErr: state.registerErr,
-      registerErrStatus: state.registerErrStatus,
-      updateRegisterErrStatus: state.updateRegisterErrStatus,
-    }),
-    shallow
-  );
+  const [nextPage, setNextPage] = useState(false);
 
-  const { loginErr, loginErrStatus, updateLoginErrStatus } = authLoginStore(
+  const { registerErr, registerErrStatus, updateRegisterErrStatus } =
+    useAuthRegisterStore(
+      (state) => ({
+        registerErr: state.registerErr,
+        registerErrStatus: state.registerErrStatus,
+        updateRegisterErrStatus: state.updateRegisterErrStatus,
+      }),
+      shallow
+    );
+
+  const { loginErr, loginErrStatus, updateLoginErrStatus } = useAuthLoginStore(
     (state) => ({
       loginErr: state.loginErr,
       loginErrStatus: state.loginErrStatus,
@@ -28,6 +33,15 @@ const AuthMainComponent = () => {
     }),
     shallow
   );
+
+  const { isLoginSuccess } = useAuthLogin();
+
+  if (isLoginSuccess)
+    return (
+      <div className='relative flex items-center min-h-screen w-screen justify-center'>
+        <p className='text-lg'>Logging in. Please wait ...</p>
+      </div>
+    );
 
   return (
     <div className='relative flex items-center min-h-screen p-4 bg-gray-300 lg:justify-center'>
@@ -54,7 +68,7 @@ const AuthMainComponent = () => {
               </Link>
             </p>
           ) : null}
-          <p className='mt-6 text-sm text-center text-gray-300'>
+          {/* <p className='mt-6 text-sm text-center text-gray-300'>
             Read our{' '}
             <a href='#' className='underline'>
               terms
@@ -63,7 +77,7 @@ const AuthMainComponent = () => {
             <a href='#' className='underline'>
               conditions
             </a>
-          </p>
+          </p> */}
         </section>
         <section className='p-5 bg-white md:flex-1'>
           <h3 className='my-4 text-2xl font-semibold text-gray-700'>

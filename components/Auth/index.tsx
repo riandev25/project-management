@@ -38,7 +38,7 @@ const AuthMainComponent = () => {
 
   if (isLoginSuccess)
     return (
-      <div className='relative flex items-center min-h-screen w-screen justify-center items-center'>
+      <div className='relative flex items-center min-h-screen w-screen justify-center'>
         <p className='text-lg'>Logging in. Please wait ...</p>
       </div>
     );
@@ -68,7 +68,7 @@ const AuthMainComponent = () => {
               </Link>
             </p>
           ) : null}
-          <p className='mt-6 text-sm text-center text-gray-300'>
+          {/* <p className='mt-6 text-sm text-center text-gray-300'>
             Read our{' '}
             <a href='#' className='underline'>
               terms
@@ -77,7 +77,7 @@ const AuthMainComponent = () => {
             <a href='#' className='underline'>
               conditions
             </a>
-          </p>
+          </p> */}
         </section>
         <section className='p-5 bg-white md:flex-1'>
           <h3 className='my-4 text-2xl font-semibold text-gray-700'>
