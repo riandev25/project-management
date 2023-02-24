@@ -19,9 +19,10 @@ export const userService = () => {
 
   const createBoard = async ({ boardName }: ICreateNewBoard): Promise<any> => {
     try {
-      await apiClient.post('', { boardName });
+      const response = await apiClient.post('', { boardName });
+      return response.data;
     } catch (err) {
-      console.error(err);
+      return err;
     }
   };
 
