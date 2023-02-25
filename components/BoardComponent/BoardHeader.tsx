@@ -42,7 +42,7 @@ const BoardHeader = () => {
         <button
           type='button'
           onClick={logoutHandler}
-          className='text-sm sm:text-base text-gray-800 px-2 py-1 xs:px-4 xs:py-2 bg-gray-200 border rounded-md hover:bg-gray-300'
+          className=' text-sm sm:text-base font-light text-gray-300 hover:text-gray-800 px-2 py-1 xs:px-4 xs:py-2 bg-transparent border border-gray-300 transition-colors rounded-md hover:bg-gray-300'
         >
           {isLoading ? 'Processing...' : 'Logout'}
         </button>
