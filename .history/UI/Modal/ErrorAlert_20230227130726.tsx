@@ -6,7 +6,7 @@ interface IErrorAlert {
 
 const ErrorAlert = ({ errorMsg, additionalMsg, closeAlert }: IErrorAlert) => {
   return (
-    <div className='p-5 text-white border border-red-400 rounded-lg shadow-md bg-red-700 transition-all translate-x-12 dark:bg-gray-800 dark:text-red-400 dark:border-red-900'>
+    <div className='absolute top-1/2 left-1/2 p-5 mb-4 text-white border border-red-400 rounded-lg shadow-md bg-red-700 transition-all translate-x-12 dark:bg-gray-800 dark:text-red-400 dark:border-red-900'>
       <div className='flex items-center text-red-300'>
         <svg
           aria-hidden='true'

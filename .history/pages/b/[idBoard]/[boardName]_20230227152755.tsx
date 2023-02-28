@@ -11,8 +11,6 @@ const Board: NextPageWithLayout = ({ cookie }: any) => {
     if (!cookie) router.push('/auth/login');
   }, [cookie, router]);
 
-  if (!cookie) return <p></p>;
-
   return (
     <div className='fixed flex flex-col w-full h-full pt-2 px-2 bg-gray-800 bg-cover'>
       <BoardComponent />

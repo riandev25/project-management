@@ -45,8 +45,8 @@ const AuthMainComponent = () => {
     );
 
   return (
-    <div className='relative flex items-center min-h-screen p-4 bg-gray-300 lg:justify-center overflow-x-hidden'>
-      <div className='relative flex flex-col overflow-x-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md'>
+    <div className='relative flex items-center min-h-screen p-4 bg-gray-300 lg:justify-center'>
+      <div className='relative flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md'>
         <section className='p-4 py-6 text-white bg-blue-700 md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly'>
           <h1 className='my-3 text-4xl font-bold tracking-wider text-center'>
             <a href='#'>Task Accio</a>
@@ -101,7 +101,7 @@ const AuthMainComponent = () => {
         />
       ) : null}
       {loginErrStatus ? (
-        <div className='w-[calc(100vw-16px)] h-screen absolute top-0 left-0 flex justify-center items-center overflow-x-hidden'>
+        <div className='w-screen h-screen absolute top-0 left-0 flex justify-center items-center'>
           {/* {loginErrStatus ? ( */}
           <ErrorAlert
             errorMsg='Login failed'
