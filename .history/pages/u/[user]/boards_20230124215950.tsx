@@ -33,7 +33,7 @@ export default UserBoardsPage;
 
 export const getServerSideProps = (ctx: any) => {
   const { req } = ctx;
-  const { cookie } = req.session;
+  const { cookie } = req.headers;
 
   if (cookie) {
     return {
