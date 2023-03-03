@@ -69,8 +69,8 @@ const AuthMainComponent = () => {
             Don&apos;t want to use your actual email? Don&apos;t worry because
             this login system doesn&apos;t have email verification. You can just
             log any email you want as long as it&apos;s valid. Your password
-            will be hashed, this mean your actual password will not reflect in
-            the database for your privacy and security.
+            will be hashed, this means your actual password will not reflect
+            in the database for your privacy and security.
           </p>
           {path !== '/auth/register/' ? (
             <p className='flex flex-col items-center justify-center mt-10 text-center'>
@@ -79,14 +79,7 @@ const AuthMainComponent = () => {
                 Get Started!
               </Link>
             </p>
-          ) : (
-            <p className='flex flex-col items-center justify-center mt-10 text-center'>
-              <span>Already have an account?</span>
-              <Link href='/auth/login' className='underline'>
-                Login here!
-              </Link>
-            </p>
-          )}
+          ) : null}
           {/* <p className='mt-6 text-sm text-center text-gray-300'>
             Read our{' '}
             <a href='#' className='underline'>
