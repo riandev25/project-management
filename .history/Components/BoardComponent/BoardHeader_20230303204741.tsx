@@ -10,10 +10,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import {
-  getLocalStorage,
-  removeLocalStorage,
-} from '../../lib/utils/localStorage';
+import { getLocalStorage } from '../../lib/utils/localStorage';
 
 const BoardHeader = () => {
   const router = useRouter();
