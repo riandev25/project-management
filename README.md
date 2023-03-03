@@ -31,7 +31,7 @@ Task Accio is a full-stack web application that allows users to manage their tas
 
 ## Main Features
 
-- **Login authentication**: JavaScript library for building user interfaces.
+- **Login and JWT authentication**: JavaScript library for building user interfaces.
 - **Labels**: Users can add labels to their tasks to categorize and filter them.
 - **Checklist**: Users can add a checklist to their tasks to break them down into smaller, more manageable sub-tasks.
 - **Image upload/download**: Users can upload and download images to their tasks to provide additional context.
